@@ -1,0 +1,8205 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1">
+	<title>Football Manager 2021 Wonderkids | FM Scout</title>
+
+	<style media="screen">
+		body {
+			font-family: sans-serif;
+			font-size: 0.8em;
+		}
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+		th {
+			cursor: pointer;
+		}
+		td {
+			border-top: 1px solid #eee;
+			border-bottom: 1px solid #eee;
+			padding: 3px 8px;
+			white-space: nowrap;
+		}
+		#search {
+			width: 85%;
+			margin-left: 5%;
+			padding: 0.5em;
+			margin-bottom: 2em;
+		}
+		.twrap {
+			width: 100%;
+			overflow-x: auto;
+		}
+		.pag {background:#fceca3!important}
+		.pah {background:#d5ffb6!important}
+		.pab {background:#b6fff6!important}
+		.paf {background:#e2e1ff!important}
+		.fpa {background:#ff9}
+	</style>
+
+	<script>
+		/**
+		* Modified and more readable version of the answer by Paul S. to sort a table with ASC and DESC order
+		* with the <thead> and <tbody> structure easily.
+		*
+		* https://stackoverflow.com/a/14268260/4241030
+		*/
+		var TableSorter = {
+			makeSortable: function(table){
+				// Store context of this in the object
+				var _this = this;
+				var th = table.tHead, i;
+				th && (th = th.rows[0]) && (th = th.cells);
+
+				if (th){
+					i = th.length;
+				}else{
+					return; // if no `<thead>` then do nothing
+				}
+
+				// Loop through every <th> inside the header
+				while (--i >= 0) (function (i) {
+					var dir = 1;
+
+					// Append click listener to sort
+					th[i].addEventListener('click', function () {
+						_this._sort(table, i, (dir = 1 - dir));
+					});
+				}(i));
+			},
+			_sort: function (table, col, reverse) {
+				var tb = table.tBodies[0], // use `<tbody>` to ignore `<thead>` and `<tfoot>` rows
+				tr = Array.prototype.slice.call(tb.rows, 0), // put rows into array
+				i;
+
+				reverse = -((+reverse) || -1);
+
+				// Sort rows
+				tr = tr.sort(function (a, b) {
+					// `-1 *` if want opposite order
+					return reverse * (
+						// Using `.textContent.trim()` for test
+						a.cells[col].textContent.trim().localeCompare(
+							b.cells[col].textContent.trim()
+						)
+					);
+				});
+
+				for(i = 0; i < tr.length; ++i){
+					// Append rows in new order
+					tb.appendChild(tr[i]);
+				}
+			}
+		};
+
+		window.onload = function(){
+			TableSorter.makeSortable(document.getElementById("players"));
+		};
+
+		(function(document) {
+			'use strict';
+
+			var TableFilter = (function(myArray) {
+				var search_input;
+
+				function _onInputSearch(e) {
+					search_input = e.target;
+					var tables = document.getElementsByClassName(search_input.getAttribute('data-table'));
+					myArray.forEach.call(tables, function(table) {
+						myArray.forEach.call(table.tBodies, function(tbody) {
+							myArray.forEach.call(tbody.rows, function(row) {
+								var text_content = row.textContent.toLowerCase();
+								var search_val = search_input.value.toLowerCase();
+								row.style.display = text_content.indexOf(search_val) > -1 ? '' : 'none';
+							});
+						});
+					});
+				}
+
+				return {
+					init: function() {
+						var inputs = document.getElementsByClassName('search');
+						myArray.forEach.call(inputs, function(input) {
+							input.oninput = _onInputSearch;
+						});
+					}
+				};
+			})(Array.prototype);
+
+			document.addEventListener('readystatechange', function() {
+				if (document.readyState === 'complete') {
+					TableFilter.init();
+				}
+			});
+
+		})(document);
+	</script>
+</head>
+
+<body>
+
+<input type="search" id="search" placeholder="Search..." class="search" data-table="players">
+
+<div class="twrap">
+
+<table id="players" class="players">
+	<thead>
+		<tr role="row">
+			<th>GRP</th>
+			<th>R</th>
+			<th>name</th>
+			<th>age</th>
+			<th>pos</th>
+			<th>club</th>
+			<th>wage</th>
+			<th>cost</th>
+			<th>nat</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr data-player-id="67273626">
+			<td>GK</td>
+			<td>80</td>
+			<td><span>Iván Martínez</span></td>
+			<td>18</td>
+			<td>GK</td>
+			<td>Atlético Pamplona</td>
+			<td>1.1</td>
+			<td>0.03</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="19358101">
+			<td>GK</td>
+			<td>81</td>
+			<td><span>Matheus Donelli</span></td>
+			<td>18</td>
+			<td>GK</td>
+			<td>COR</td>
+			<td>0.4</td>
+			<td>0.01</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="43425195" class="pab">
+			<td>GK</td>
+			<td>83</td>
+			<td><span>Gasparini, Manuel</span></td>
+			<td>18</td>
+			<td>GK</td>
+			<td>Udinese</td>
+			<td>2</td>
+			<td>0.07</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="19367263">
+			<td>GK</td>
+			<td>78</td>
+			<td><span>Cristian</span></td>
+			<td>18</td>
+			<td>GK</td>
+			<td>ATM</td>
+			<td>0.07</td>
+			<td>0.001</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="18087914" class="paf">
+			<td>GK</td>
+			<td>75</td>
+			<td><span>Svilar, Mile</span></td>
+			<td>20</td>
+			<td>GK</td>
+			<td>SLB</td>
+			<td>9.3</td>
+			<td>0.3</td>
+			<td>be</td>
+		</tr>
+		<tr data-player-id="2000047600">
+			<td>GK</td>
+			<td>74</td>
+			<td><span>Pinto, Diogo</span></td>
+			<td>16</td>
+			<td>GK</td>
+			<td>Sporting</td>
+			<td>0.06</td>
+			<td>0.001</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="29193984">
+			<td>GK</td>
+			<td>77</td>
+			<td><span>Dewhurst, Marcus</span></td>
+			<td>19</td>
+			<td>GK</td>
+			<td>Sheff Utd</td>
+			<td>0.6</td>
+			<td>0.1</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="49048342" class="pab">
+			<td>GK</td>
+			<td>78</td>
+			<td><span>Bajic, Stefan</span></td>
+			<td>18</td>
+			<td>GK</td>
+			<td>AS Saint-Etienne</td>
+			<td>1</td>
+			<td>0.1</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="62216198" class="paf">
+			<td>GK</td>
+			<td>76</td>
+			<td><span>Petrovic, Djordje</span></td>
+			<td>20</td>
+			<td>GK</td>
+			<td>Cukaricki</td>
+			<td>0.6</td>
+			<td>0.05</td>
+			<td>rs</td>
+		</tr>
+		<tr data-player-id="43298002">
+			<td>GK</td>
+			<td>76</td>
+			<td><span>Carnesecchi, Marco</span></td>
+			<td>20</td>
+			<td>GK</td>
+			<td>Atalanta</td>
+			<td>3.5</td>
+			<td>0.3</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="28118905">
+			<td>GK</td>
+			<td>80</td>
+			<td><span>Kovár, Matej</span></td>
+			<td>20</td>
+			<td>GK</td>
+			<td>Man Utd</td>
+			<td>2.5</td>
+			<td>0.2</td>
+			<td>cz</td>
+		</tr>
+		<tr data-player-id="43378804">
+			<td>GK</td>
+			<td>77</td>
+			<td><span>Turati, Stefano</span></td>
+			<td>18</td>
+			<td>GK</td>
+			<td>Sassuolo</td>
+			<td>0.2</td>
+			<td>0.08</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="83243050">
+			<td>GK</td>
+			<td>77</td>
+			<td><span>Dutra, Sérgio</span></td>
+			<td>18</td>
+			<td>GK</td>
+			<td>Vit. Guimarães</td>
+			<td>0.5</td>
+			<td>0.002</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="83228782">
+			<td>GK</td>
+			<td>77</td>
+			<td><span>Meixedo, Francisco</span></td>
+			<td>19</td>
+			<td>GK</td>
+			<td>FCP</td>
+			<td>1.8</td>
+			<td>0.01</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="83169226" class="pab">
+			<td>GK</td>
+			<td class="fpa">79</td>
+			<td><span>Costa, Diogo</span></td>
+			<td>20</td>
+			<td>GK</td>
+			<td>FCP</td>
+			<td>3.4</td>
+			<td>1</td>
+			<td>pt</td>
+	</tr>
+		<tr data-player-id="49048357">
+			<td>GK</td>
+			<td>75</td>
+			<td><span>Chevalier, Lucas</span></td>
+			<td>18</td>
+			<td>GK</td>
+			<td>LOSC</td>
+			<td>0.9</td>
+			<td>0.08</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="29233994">
+			<td>GK</td>
+			<td>76</td>
+			<td><span>Boyce-Clarke, Coniah</span></td>
+			<td>17</td>
+			<td>GK</td>
+			<td>Reading</td>
+			<td>1.8</td>
+			<td>0.03</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="2000015309">
+			<td>GK</td>
+			<td>83</td>
+			<td><span>van Sas, Mikki</span></td>
+			<td>16</td>
+			<td>GK</td>
+			<td>Man City</td>
+			<td>0.1</td>
+			<td>0.01</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="49056387">
+			<td>GK</td>
+			<td>75</td>
+			<td><span>Lavallée, Lucas</span></td>
+			<td>17</td>
+			<td>GK</td>
+			<td>LOSC</td>
+			<td>0.08</td>
+			<td>0.04</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="52094936">
+			<td>GK</td>
+			<td>79</td>
+			<td><span>Bazunu, Gavin</span></td>
+			<td>18</td>
+			<td>GK</td>
+			<td>Man City</td>
+			<td>5</td>
+			<td>0.1</td>
+			<td>ie</td>
+		</tr>
+		<tr data-player-id="2000020332">
+			<td>GK</td>
+			<td>78</td>
+			<td><span>Setford, Charlie</span></td>
+			<td>16</td>
+			<td>GK</td>
+			<td>Ajax</td>
+			<td>0.09</td>
+			<td>0.03</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="2000014080">
+			<td>GK</td>
+			<td>78</td>
+			<td><span>Owusu-Oduro, Rome-Jayden</span></td>
+			<td>16</td>
+			<td>GK</td>
+			<td>AZ</td>
+			<td>0.09</td>
+			<td>0.02</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="19338228">
+			<td>GK</td>
+			<td>75</td>
+			<td><span>Gabriel Brazão</span></td>
+			<td>19</td>
+			<td>GK</td>
+			<td>Inter</td>
+			<td>3.6</td>
+			<td>0.1</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="43384567">
+			<td>GK</td>
+			<td>80</td>
+			<td><span>Russo, Alessandro</span></td>
+			<td>19</td>
+			<td>GK</td>
+			<td>Sassuolo</td>
+			<td>4.8</td>
+			<td>0.1</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="67283140">
+			<td>GK</td>
+			<td>77</td>
+			<td><span>Jörgensen, Filip</span></td>
+			<td>18</td>
+			<td>GK</td>
+			<td>Villarreal</td>
+			<td>1.5</td>
+			<td>0.05</td>
+			<td>se</td>
+		</tr>
+		<tr data-player-id="2000006767">
+			<td>GK</td>
+			<td>74</td>
+			<td><span>Mabon, Tom</span></td>
+			<td>16</td>
+			<td>GK</td>
+			<td>FC Nantes</td>
+			<td>0.06</td>
+			<td>0.02</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="49040115" class="pab">
+			<td>GK</td>
+			<td class="fpa">83</td>
+			<td><span>Meslier, Illan</span></td>
+			<td>20</td>
+			<td>GK</td>
+			<td>Leeds</td>
+			<td>20</td>
+			<td>18.4</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="2000049485" class="pab">
+			<td>GK</td>
+			<td>82</td>
+			<td><span>Iturbe, Alejandro</span></td>
+			<td>16</td>
+			<td>GK</td>
+			<td>A. Madrid</td>
+			<td>0.3</td>
+			<td>0.008</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="53131627">
+			<td>GK</td>
+			<td>76</td>
+			<td><span>Klaesson, Kristoffer</span></td>
+			<td>19</td>
+			<td>GK</td>
+			<td>Vålerenga</td>
+			<td>0.3</td>
+			<td>0.3</td>
+			<td>no</td>
+		</tr>
+		<tr data-player-id="37077857">
+			<td>GK</td>
+			<td>70</td>
+			<td><span>Raatsie, Calvin</span></td>
+			<td>18</td>
+			<td>GK</td>
+			<td>Ajax</td>
+			<td>0.6</td>
+			<td>0.07</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="18107187" class="pah">
+			<td>GK</td>
+			<td>84</td>
+			<td><span>Vandevoordt, Maarten</span></td>
+			<td>18</td>
+			<td>GK</td>
+			<td>KRC Genk</td>
+			<td>4.1</td>
+			<td>0.1</td>
+			<td>be</td>
+		</tr>
+		<tr data-player-id="53122155">
+			<td>DC</td>
+			<td>81</td>
+			<td><span>Østigård, Leo</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Brighton</td>
+			<td>4</td>
+			<td>3.9</td>
+			<td>no</td>
+		</tr>
+		<tr data-player-id="2000052040" class="pab">
+			<td>DC</td>
+			<td>82</td>
+			<td><span>Carrillo, Álvaro</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>R. Madrid</td>
+			<td>1.2</td>
+			<td>0.04</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="2000006158">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Kambwala, Willy</span></td>
+			<td>15</td>
+			<td>D C</td>
+			<td>Man Utd</td>
+			<td>0.1</td>
+			<td>0.06</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="28121567">
+			<td>DC</td>
+			<td>76</td>
+			<td><span>Mengi, Teden</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>Man Utd</td>
+			<td>1.2</td>
+			<td>7.1</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="49039004" class="pab">
+			<td>DC</td>
+			<td>81</td>
+			<td><span>Saliba, William</span></td>
+			<td>19</td>
+			<td>D C</td>
+			<td>Arsenal</td>
+			<td>40</td>
+			<td>11.6</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="43426109">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Viti, Mattia</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>Empoli</td>
+			<td>1.4</td>
+			<td>0.1</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="2000032467">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Iranzo, Rubén</span></td>
+			<td>17</td>
+			<td>D C</td>
+			<td>Valencia</td>
+			<td>1.4</td>
+			<td>0.04</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="43425644" class="pab">
+			<td>DC</td>
+			<td>83</td>
+			<td><span>Papetti, Andrea</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>Brescia</td>
+			<td>0.2</td>
+			<td>1.6</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="83320105">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Brás, Gabriel</span></td>
+			<td>16</td>
+			<td>D C</td>
+			<td>FCP</td>
+			<td>0.06</td>
+			<td>0.001</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="14216968">
+			<td>DC</td>
+			<td>81</td>
+			<td><span>Amione, Bruno</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>Verona</td>
+			<td>3.5</td>
+			<td>0.2</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="43373238">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Armini, Nicolò</span></td>
+			<td>19</td>
+			<td>D RC</td>
+			<td>Lazio</td>
+			<td>17.7</td>
+			<td>0.1</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="2000049416">
+			<td>DC</td>
+			<td>77</td>
+			<td><span>Almeida, Diego</span></td>
+			<td>16</td>
+			<td>D C</td>
+			<td>Barcelona</td>
+			<td>0.7</td>
+			<td>0.04</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="49058792" class="pab">
+			<td>DC</td>
+			<td>82</td>
+			<td><span>Pembélé, Thimothée</span></td>
+			<td>17</td>
+			<td>D C</td>
+			<td>Paris SG</td>
+			<td>5.2</td>
+			<td>0.2</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="67248170">
+			<td>DC</td>
+			<td>80</td>
+			<td><span>Cuenca, Jorge</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Villarreal</td>
+			<td>5.6</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="43318558" class="pab">
+			<td>DC</td>
+			<td>83</td>
+			<td><span>Lovato, Matteo</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Verona</td>
+			<td>2.8</td>
+			<td>0.6</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="28116003">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Ferguson, Nathan</span></td>
+			<td>19</td>
+			<td>D RC</td>
+			<td>Crystal Palace</td>
+			<td>35</td>
+			<td>7.1</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="37055843" class="pag">
+			<td>DC</td>
+		<td class="fpa">91</td>
+			<td><span>de Ligt, Matthijs</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Zebre</td>
+			<td>213</td>
+			<td>35</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="43424958">
+			<td>DC</td>
+			<td>80</td>
+			<td><span>Dalle Mura, Christian</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>Fiorentina</td>
+			<td>0.2</td>
+			<td>0.04</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="67249928">
+			<td>DC</td>
+			<td>76</td>
+			<td><span>Sadick, Mujaid</span></td>
+			<td>20</td>
+			<td>D RC</td>
+			<td>Coruña</td>
+			<td>4.6</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67258572" class="paf">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Chust, Víctor</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>R. Madrid</td>
+			<td>2.5</td>
+			<td>0.09</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="48044499" class="pag">
+			<td>DC</td>
+		<td class="fpa">87</td>
+			<td><span>Todibo, Jean-Clair</span></td>
+			<td>20</td>
+			<td>D C, DM</td>
+			<td>Barcelona</td>
+			<td>21.9</td>
+			<td>4.9</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="49037900" class="pah">
+			<td>DC</td>
+		<td class="fpa">83</td>
+			<td><span>Fofana, Wesley</span></td>
+			<td>19</td>
+			<td>D C</td>
+			<td>Leicester</td>
+			<td>55</td>
+			<td>11.6</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="37073313" class="pab">
+			<td>DC</td>
+			<td>82</td>
+			<td><span>Rensch, Devyne</span></td>
+			<td>17</td>
+			<td>D RLC, DM</td>
+			<td>Ajax</td>
+			<td>1</td>
+			<td>0.2</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="43266774">
+			<td>DC</td>
+			<td>77</td>
+			<td><span>Gabbia, Matteo</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Milan</td>
+			<td>19.5</td>
+			<td>1.4</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="28127159">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Koumetio, Billy</span></td>
+			<td>17</td>
+			<td>D C</td>
+			<td>Liverpool</td>
+			<td>0.7</td>
+			<td>0.01</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="43425720" class="pab">
+			<td>DC</td>
+			<td>81</td>
+			<td><span>Pirola, Lorenzo</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>Inter</td>
+			<td>1.5</td>
+			<td>0.07</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="53175735">
+			<td>DC</td>
+			<td>80</td>
+			<td><span>Normann Williamsen, Max</span></td>
+			<td>17</td>
+			<td>D C</td>
+			<td>Kristiansund</td>
+			<td>0.3</td>
+			<td>0.02</td>
+			<td>no</td>
+		</tr>
+		<tr data-player-id="83261917" class="pab">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Quaresma, Eduardo</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>Sporting</td>
+			<td>4.5</td>
+			<td>0.7</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="37061235">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Pierie, Kik</span></td>
+			<td>20</td>
+			<td>D LC</td>
+			<td>Ajax</td>
+			<td>2.8</td>
+			<td>1.4</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="49037684">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Solet, Oumar</span></td>
+			<td>20</td>
+			<td>D C, DM</td>
+			<td>FC RB Salzburg</td>
+			<td>4.3</td>
+			<td>0.3</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="28129876">
+			<td>DC</td>
+			<td>73</td>
+			<td><span>Baptiste, Jamal</span></td>
+			<td>16</td>
+			<td>D C</td>
+			<td>West Ham</td>
+			<td>0.1</td>
+			<td>0.04</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="28120046">
+			<td>DC</td>
+			<td>80</td>
+			<td><span>Harwood-Bellis, Taylor</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>Man City</td>
+			<td>3</td>
+			<td>0.5</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="62220026" class="pab">
+			<td>DC</td>
+			<td>82</td>
+			<td><span>Pavlovic, Strahinja</span></td>
+			<td>19</td>
+			<td>D C</td>
+			<td>AS Monaco</td>
+			<td>6.9</td>
+			<td>0.9</td>
+			<td>rs</td>
+		</tr>
+		<tr data-player-id="29216806">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Wood, Nathan</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>Middlesbrough</td>
+			<td>1</td>
+			<td>0.1</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="49038942" class="pab">
+			<td>DC</td>
+			<td>81</td>
+			<td><span>Badiashile, Benoît</span></td>
+			<td>19</td>
+			<td>D C</td>
+			<td>AS Monaco</td>
+			<td>10.5</td>
+			<td>2.4</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="67295020">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Muñoz, Iván</span></td>
+			<td>18</td>
+			<td>D LC</td>
+			<td>Valencia</td>
+			<td>2.4</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67278005">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Ramón, Pablo</span></td>
+			<td>19</td>
+			<td>D RC</td>
+			<td>R. Madrid</td>
+			<td>1.4</td>
+			<td>0.04</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="2000014931">
+			<td>DC</td>
+			<td>76</td>
+			<td><span>Mbete-Tabu, Luke</span></td>
+			<td>16</td>
+			<td>D C</td>
+			<td>Man City</td>
+			<td>0.1</td>
+			<td>0.02</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="2000030816" class="pab">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Mosquera, Cristhian</span></td>
+			<td>16</td>
+			<td>D RC</td>
+			<td>Valencia</td>
+			<td>0.06</td>
+			<td>0.05</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="83169853" class="paf">
+			<td>DC</td>
+			<td>77</td>
+			<td><span>Álvaro, Pedro</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>SLB</td>
+			<td>2.7</td>
+			<td>0.1</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="93127195">
+			<td>DC</td>
+			<td>76</td>
+			<td><span>Kossounou, Odilon</span></td>
+			<td>19</td>
+			<td>D RC</td>
+			<td>Club Brugge</td>
+			<td>4.5</td>
+			<td>0.6</td>
+			<td>ci</td>
+		</tr>
+		<tr data-player-id="49054633">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Kamardin, Aaron</span></td>
+			<td>18</td>
+			<td>D C, DM</td>
+			<td>OM</td>
+			<td>1.3</td>
+			<td>0.02</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="67258817">
+			<td>DC</td>
+			<td>77</td>
+			<td><span>Guillamón, Hugo</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Valencia</td>
+			<td>5.9</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="2000022712">
+			<td>DC</td>
+			<td>76</td>
+			<td><span>Zaal, Timo</span></td>
+			<td>16</td>
+			<td>D C</td>
+			<td>sc Heerenveen</td>
+			<td>0.09</td>
+			<td>0.05</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="83261125">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Vinhas, David</span></td>
+			<td>17</td>
+			<td>D C</td>
+			<td>FCP</td>
+			<td>1.8</td>
+			<td>0.006</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="84154025" class="pab">
+			<td>DC</td>
+			<td>81</td>
+			<td><span>Stergiou, Leonidas</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>St. Gallen</td>
+			<td>2.1</td>
+			<td>0.9</td>
+			<td>ch</td>
+		</tr>
+		<tr data-player-id="29226000">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Branthwaite, Jarrad</span></td>
+			<td>18</td>
+			<td>D RLC</td>
+			<td>Everton</td>
+			<td>5</td>
+			<td>0.3</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="53151875" class="paf">
+			<td>DC</td>
+			<td>76</td>
+			<td><span>Kolskogen, Ole Martin</span></td>
+			<td>19</td>
+			<td>D C</td>
+			<td>Brann</td>
+			<td>0.6</td>
+			<td>0.06</td>
+			<td>no</td>
+		</tr>
+		<tr data-player-id="28126244">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Burns, Finley</span></td>
+			<td>17</td>
+			<td>D C</td>
+			<td>Man City</td>
+			<td>0.1</td>
+			<td>0.06</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="49047065" class="paf">
+			<td>DC</td>
+			<td>77</td>
+			<td><span>Simakan, Mohamed</span></td>
+			<td>20</td>
+			<td>D RC</td>
+			<td>Strasbourg</td>
+			<td>4.5</td>
+			<td>0.6</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="48044279" class="paf">
+			<td>DC</td>
+			<td>77</td>
+			<td><span>Brassier, Lilian</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Rennes</td>
+			<td>3.6</td>
+			<td>0.4</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="61094097">
+			<td>DC</td>
+			<td>81</td>
+			<td><span>King, Leon</span></td>
+			<td>16</td>
+			<td>D RLC, DM</td>
+			<td>Rangers</td>
+			<td>0.03</td>
+			<td>0.008</td>
+			<td>gb-sct</td>
+		</tr>
+		<tr data-player-id="14231060">
+			<td>DC</td>
+			<td>74</td>
+			<td><span>Machuca, Elías</span></td>
+			<td>17</td>
+			<td>D C</td>
+			<td>Racing Club</td>
+			<td>0.4</td>
+			<td>0.7</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="43316726" class="pab">
+			<td>DC</td>
+			<td>82</td>
+			<td><span>Bettella, Davide</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Atalanta</td>
+			<td>1.5</td>
+			<td>0.6</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="49038967">
+			<td>DC</td>
+			<td>77</td>
+			<td><span>Diakité, Bafodé</span></td>
+			<td>19</td>
+			<td>D RC</td>
+			<td>Toulouse FC</td>
+			<td>4.4</td>
+			<td>0.3</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="24057528">
+			<td>DC</td>
+			<td>77</td>
+			<td><span>Vuskovic, Mario</span></td>
+			<td>18</td>
+			<td>D C, DM</td>
+			<td>Hajduk</td>
+			<td>0.6</td>
+			<td>0.05</td>
+			<td>hr</td>
+		</tr>
+		<tr data-player-id="28116427" class="pah">
+			<td>DC</td>
+		<td class="fpa">83</td>
+			<td><span>García, Eric</span></td>
+			<td>19</td>
+			<td>D C</td>
+			<td>Man City</td>
+			<td>12</td>
+			<td>22.6</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="71104580">
+			<td>DC</td>
+			<td>76</td>
+			<td><span>Syrota, Olexandr</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Dynamo Kyiv</td>
+			<td>0.2</td>
+			<td>0.03</td>
+			<td>ua</td>
+		</tr>
+		<tr data-player-id="2000058330">
+			<td>DC</td>
+			<td>76</td>
+			<td><span>González de Zárate, Urko</span></td>
+			<td>19</td>
+			<td>D C, DM</td>
+			<td>Real San Sebastián</td>
+			<td>1.6</td>
+			<td>0.06</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="37059452" class="paf">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Struijk, Pascal</span></td>
+			<td>20</td>
+			<td>D C, DM</td>
+			<td>Leeds</td>
+			<td>2</td>
+			<td>2.9</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="19302472">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Geovani</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>FLU</td>
+			<td>0.1</td>
+			<td>0.01</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="14219093" class="pab">
+			<td>DC</td>
+			<td>81</td>
+			<td><span>Ramos Mingo, Santi</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>Barcelona</td>
+			<td>2.2</td>
+			<td>0.04</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="78089395" class="paf">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Méndez, Bruno</span></td>
+			<td>20</td>
+			<td>D RC</td>
+			<td>COR</td>
+			<td>3.5</td>
+			<td>0.7</td>
+			<td>uy</td>
+		</tr>
+		<tr data-player-id="2000010316">
+			<td>DC</td>
+			<td>75</td>
+			<td><span>van den Berg, Rav</span></td>
+			<td>16</td>
+			<td>D C</td>
+			<td>PEC Zwolle</td>
+			<td>0.09</td>
+			<td>0.05</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="67276505" class="paf">
+			<td>DC</td>
+			<td>75</td>
+			<td><span>Pascual, Martín</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Vallecano</td>
+			<td>3.4</td>
+			<td>0.2</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67277455" class="paf">
+			<td>DC</td>
+			<td>77</td>
+			<td><span>Gila, Mario</span></td>
+			<td>19</td>
+			<td>D C, DM</td>
+			<td>R. Madrid</td>
+			<td>3.3</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="16191211">
+			<td>DC</td>
+			<td>77</td>
+			<td><span>Greiml, Leo</span></td>
+			<td>19</td>
+			<td>D C</td>
+			<td>SK Rapid Vienna</td>
+			<td>1.2</td>
+			<td>0.3</td>
+			<td>at</td>
+		</tr>
+		<tr data-player-id="37062161">
+			<td>DC</td>
+			<td>76</td>
+			<td><span>Schuurs, Perr</span></td>
+			<td>20</td>
+			<td>D C, DM</td>
+			<td>Ajax</td>
+			<td>4.5</td>
+			<td>1.6</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="62220556" class="paf">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Zaletel, Zan</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Celje</td>
+			<td>0.9</td>
+			<td>0.3</td>
+			<td>si</td>
+		</tr>
+		<tr data-player-id="2000015032">
+			<td>DC</td>
+			<td>82</td>
+			<td><span>Kaiky</span></td>
+			<td>16</td>
+			<td>D LC</td>
+			<td>SAN</td>
+			<td>0.04</td>
+			<td>0.001</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="19347264">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Morato</span></td>
+			<td>19</td>
+			<td>D C, DM</td>
+			<td>SLB</td>
+			<td>3.4</td>
+			<td>0.1</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="28122833">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Binks, Luis</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>Bologna</td>
+			<td>1.8</td>
+			<td>0.09</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="14238024">
+			<td>DC</td>
+			<td>77</td>
+			<td><span>Quiroz, Leandro</span></td>
+			<td>16</td>
+			<td>D C</td>
+			<td>Colón</td>
+			<td>0.02</td>
+			<td>0.3</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="91205052" class="pab">
+			<td>DC</td>
+			<td>81</td>
+			<td><span>Arrey-Mbi, Bright</span></td>
+			<td>17</td>
+			<td>D C</td>
+			<td>FC Bayern</td>
+			<td>1.4</td>
+			<td>0.04</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="70131634">
+			<td>DC</td>
+			<td>77</td>
+			<td><span>Tagir, Ravil</span></td>
+			<td>17</td>
+			<td>D C</td>
+			<td>Basaksehir</td>
+			<td>2.9</td>
+			<td>0.2</td>
+			<td>tr</td>
+		</tr>
+		<tr data-player-id="62201063">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Markovic, Svetozar</span></td>
+			<td>20</td>
+			<td>D RC</td>
+			<td>Olympiakos</td>
+			<td>6.3</td>
+			<td>0.3</td>
+			<td>rs</td>
+		</tr>
+		<tr data-player-id="49054420">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Youte Kinkoue, Etienne</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>Inter</td>
+			<td>0.2</td>
+			<td>0.04</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="2000013761">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Milovanovic, Mateja</span></td>
+			<td>16</td>
+			<td>D LC, DM</td>
+			<td>Ajax</td>
+			<td>0.09</td>
+			<td>0.05</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="49048365" class="pab">
+			<td>DC</td>
+			<td>83</td>
+			<td><span>Nianzou, Tanguy</span></td>
+			<td>18</td>
+			<td>D C, DM</td>
+			<td>FC Bayern</td>
+			<td>33.6</td>
+			<td>0.1</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="29174249" class="paf">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Wilmot, Ben</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Watford</td>
+			<td>5</td>
+			<td>2.9</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="16170605" class="paf">
+			<td>DC</td>
+			<td>76</td>
+			<td><span>Maresic, Dario</span></td>
+			<td>20</td>
+			<td>D C, DM</td>
+			<td>Reims</td>
+			<td>9</td>
+			<td>1.4</td>
+			<td>at</td>
+		</tr>
+		<tr data-player-id="22067326" class="paf">
+			<td>DC</td>
+			<td>81</td>
+			<td><span>Antov, Valentin</span></td>
+			<td>19</td>
+			<td>D C, DM</td>
+			<td>CSKA-Sofia</td>
+			<td>1.1</td>
+			<td>0.1</td>
+			<td>bg</td>
+		</tr>
+		<tr data-player-id="48032198">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>N'Dicka, Evan</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Eintracht Frankfurt</td>
+			<td>8.7</td>
+			<td>1</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="92102718" class="pab">
+			<td>DC</td>
+			<td>83</td>
+			<td><span>Bella-Kotchap, Armel</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>VfL Bochu</td>
+			<td>3.5</td>
+			<td>0.05</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="2000020333">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Aertssen, Olivier</span></td>
+			<td>15</td>
+			<td>D C, DM</td>
+			<td>Ajax</td>
+			<td>0.09</td>
+			<td>0.04</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="2000032456">
+			<td>DC</td>
+			<td>80</td>
+			<td><span>González, Facundo</span></td>
+			<td>17</td>
+			<td>D C</td>
+			<td>Valencia</td>
+			<td>1.4</td>
+			<td>0.05</td>
+			<td>uy</td>
+		</tr>
+		<tr data-player-id="70110530" class="pab">
+			<td>DC</td>
+		<td class="fpa">81</td>
+			<td><span>Kabak, Ozan</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Schalke 04</td>
+			<td>35.1</td>
+			<td>4</td>
+			<td>tr</td>
+		</tr>
+		<tr data-player-id="98046083">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Omeragic, Becir</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>Zürich</td>
+			<td>2.7</td>
+			<td>0.4</td>
+			<td>ch</td>
+		</tr>
+		<tr data-player-id="2000045854" class="pab">
+			<td>DC</td>
+			<td>81</td>
+			<td><span>Collins, Nnamdi</span></td>
+			<td>16</td>
+			<td>D C</td>
+			<td>Borussia Dortmund</td>
+			<td>0.06</td>
+			<td>0.01</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="24061262">
+			<td>DC</td>
+			<td>81</td>
+			<td><span>Sutalo, Bosko</span></td>
+			<td>20</td>
+			<td>D RC</td>
+			<td>Atalanta</td>
+			<td>6.6</td>
+			<td>1.5</td>
+			<td>hr</td>
+		</tr>
+		<tr data-player-id="24060473" class="pah">
+			<td>DC</td>
+			<td>88</td>
+			<td><span>Gvardiol, Josko</span></td>
+			<td>18</td>
+			<td>D LC</td>
+			<td>RB Leipzig</td>
+			<td>13.3</td>
+			<td>0.9</td>
+			<td>hr</td>
+		</tr>
+		<tr data-player-id="29175064" class="pab">
+			<td>DC</td>
+		<td class="fpa">84</td>
+			<td><span>Ampadu, Ethan</span></td>
+			<td>19</td>
+			<td>D C, DM</td>
+			<td>Chelsea</td>
+			<td>7.5</td>
+			<td>8.1</td>
+			<td>gb-wls</td>
+		</tr>
+		<tr data-player-id="28121308">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Roberts, Haydon</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>Brighton</td>
+			<td>4</td>
+			<td>1.4</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="2000031614">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Pambou, Leon</span></td>
+			<td>16</td>
+			<td>D C</td>
+			<td>Southampton</td>
+			<td>0.1</td>
+			<td>0.02</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="83223860">
+			<td>DC</td>
+			<td>77</td>
+			<td><span>Cardoso, Gonçalo</span></td>
+			<td>19</td>
+			<td>D C</td>
+			<td>West Ham</td>
+			<td>10</td>
+			<td>1.1</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="14207518">
+			<td>DC</td>
+			<td>76</td>
+			<td><span>Ávila, Gastón</span></td>
+			<td>18</td>
+			<td>D C</td>
+			<td>Boca</td>
+			<td>1.3</td>
+			<td>0.3</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="14181374" class="pah">
+			<td>DC</td>
+		<td class="fpa">85</td>
+			<td><span>Pérez, Nehuén</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>A. Madrid</td>
+			<td>15.1</td>
+			<td>4</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="37064140">
+			<td>DC</td>
+			<td>75</td>
+			<td><span>St. Jago, Tommy</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>FC Utrecht</td>
+			<td>1.7</td>
+			<td>0.7</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="43296495" class="pah">
+			<td>DC</td>
+		<td class="fpa">87</td>
+			<td><span>Kumbulla, Marash</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Verona</td>
+			<td>31.7</td>
+			<td>5</td>
+			<td>al</td>
+		</tr>
+		<tr data-player-id="29188478">
+			<td>DC</td>
+			<td>77</td>
+			<td><span>Otasowie, Owen</span></td>
+			<td>19</td>
+			<td>D C, DM</td>
+			<td>Wolves</td>
+			<td>0.7</td>
+			<td>2</td>
+			<td>us</td>
+		</tr>
+		<tr data-player-id="18091405" class="pah">
+			<td>DC</td>
+		<td class="fpa">84</td>
+			<td><span>Vanheusden, Zinho</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Standard</td>
+			<td>23.7</td>
+			<td>5.7</td>
+			<td>be</td>
+		</tr>
+		<tr data-player-id="2000065712">
+			<td>DC</td>
+			<td>74</td>
+			<td><span>Aliu, Arbnor</span></td>
+			<td>17</td>
+			<td>D RLC, DM</td>
+			<td>Schalke 04</td>
+			<td>0.06</td>
+			<td>0.09</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="2000065713">
+			<td>DC</td>
+			<td>75</td>
+			<td><span>Denk, Luca</span></td>
+			<td>17</td>
+			<td>D C, DM</td>
+			<td>FC Bayern</td>
+			<td>0.06</td>
+			<td>0.09</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="65039138" class="paf">
+			<td>DC</td>
+			<td>73</td>
+			<td><span>Fleurs, Luke</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>SuperSport Utd</td>
+			<td>0.5</td>
+			<td>0.02</td>
+			<td>za</td>
+		</tr>
+		<tr data-player-id="29173645" class="paf">
+			<td>DC</td>
+			<td>74</td>
+			<td><span>Gibson, Lewis</span></td>
+			<td>20</td>
+			<td>D LC</td>
+			<td>Everton</td>
+			<td>5</td>
+			<td>0.45</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="28109939">
+			<td>DC</td>
+			<td>76</td>
+			<td><span>Klarer, Christoph</span></td>
+			<td>20</td>
+			<td>D C</td>
+			<td>Fortuna Dusseldorf</td>
+			<td>2.2</td>
+			<td>0.5</td>
+			<td>at</td>
+		</tr>
+		<tr data-player-id="91205066">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Lawrence, Jamie</span></td>
+			<td>17</td>
+			<td>D C</td>
+			<td>FC Bayern</td>
+			<td>0.8</td>
+			<td>0.16</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="72051563">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Richards, Chris</span></td>
+			<td>20</td>
+			<td>D RC</td>
+			<td>FC Bayern</td>
+			<td>3.2</td>
+			<td>0.17</td>
+			<td>us</td>
+		</tr>
+		<tr data-player-id="92088306">
+			<td>DC</td>
+			<td>78</td>
+			<td><span>Schlotterbeck, Nico</span></td>
+			<td>20</td>
+			<td>D LC</td>
+			<td>SC Freiburg</td>
+			<td>3.5</td>
+			<td>2.2</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="96105337">
+			<td>DC</td>
+			<td>79</td>
+			<td><span>Walukiewicz, Sebastian</span></td>
+			<td>20</td>
+			<td>D C, DM</td>
+			<td>Cagliari</td>
+			<td>8</td>
+			<td>3.5</td>
+			<td>pl</td>
+		</tr>
+		<tr data-player-id="28115834">
+			<td>DL</td>
+			<td>82</td>
+			<td><span>Williams, Brandon</span></td>
+			<td>19</td>
+			<td>D/WB RL</td>
+			<td>Man Utd</td>
+			<td>40</td>
+			<td>19.7</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="2000034349">
+			<td>DL</td>
+			<td>79</td>
+			<td><span>Montañana, Hugo</span></td>
+			<td>17</td>
+			<td>D LC, M L</td>
+			<td>Valencia</td>
+			<td>1.4</td>
+			<td>0.05</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="49041157">
+			<td>DL</td>
+			<td>79</td>
+			<td><span>Bard, Melvin</span></td>
+			<td>19</td>
+			<td>D LC</td>
+			<td>OL</td>
+			<td>14</td>
+			<td>0.7</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="43424738" class="pab">
+			<td>DL</td>
+			<td>83</td>
+			<td><span>Calafiori, Riccardo</span></td>
+			<td>18</td>
+			<td>D/WB/M L</td>
+			<td>Roma</td>
+			<td>13</td>
+			<td>0.1</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="67258411" class="pab">
+			<td>DL</td>
+			<td>84</td>
+			<td><span>Miranda, Juan</span></td>
+			<td>20</td>
+			<td>D/WB/M L</td>
+			<td>Barcelona</td>
+			<td>7.2</td>
+			<td>0.8</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67276239">
+			<td>DL</td>
+			<td>77</td>
+			<td><span>Imanol</span></td>
+			<td>20</td>
+			<td>D LC</td>
+			<td>A. Bilbao</td>
+			<td>2.1</td>
+			<td>0.07</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="61089387">
+			<td>DL</td>
+			<td>80</td>
+			<td><span>Hickey, Aaron</span></td>
+			<td>18</td>
+			<td>D RL</td>
+			<td>Bologna</td>
+			<td>13.1</td>
+			<td>0.8</td>
+			<td>gb-sct</td>
+		</tr>
+		<tr data-player-id="2000032706">
+			<td>DL</td>
+			<td>77</td>
+			<td><span>Fernández, Álvaro</span></td>
+			<td>17</td>
+			<td>D L</td>
+			<td>Man Utd</td>
+			<td>1.5</td>
+			<td>0.06</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="49046358">
+			<td>DL</td>
+			<td>81</td>
+			<td><span>Zagré, Arthur</span></td>
+			<td>18</td>
+			<td>D L</td>
+			<td>AS Monaco</td>
+			<td>11.5</td>
+			<td>0.2</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="83261910" class="pah">
+			<td>DL</td>
+			<td>86</td>
+			<td><span>Mendes, Nuno</span></td>
+			<td>18</td>
+			<td>D/WB L</td>
+			<td>Sporting</td>
+			<td>4.1</td>
+			<td>4.5</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="43425834">
+			<td>DL</td>
+			<td>78</td>
+			<td><span>Ruggeri, Matteo</span></td>
+			<td>18</td>
+			<td>D/WB L</td>
+			<td>Atalanta</td>
+			<td>0.2</td>
+			<td>0.07</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="49047581" class="pab">
+			<td>DL</td>
+			<td>84</td>
+			<td><span>Aït-Nouri, Rayan</span></td>
+			<td>19</td>
+			<td>D L</td>
+			<td>Angers SCO</td>
+			<td>9.8</td>
+			<td>2.2</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="95078288" class="pab">
+			<td>DL</td>
+			<td>81</td>
+			<td><span>Vázquez, Jesús</span></td>
+			<td>17</td>
+			<td>D/WB/M L</td>
+			<td>Valencia</td>
+			<td>1.6</td>
+			<td>0.06</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="91178620" class="pab">
+			<td>DL</td>
+			<td>86</td>
+			<td><span>Katterbach, Noah</span></td>
+			<td>19</td>
+			<td>D/WB L</td>
+			<td>1. FC Köln</td>
+			<td>1.7</td>
+			<td>1</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="83261895">
+			<td>DL</td>
+			<td>81</td>
+			<td><span>Montóia, Guilherme</span></td>
+			<td>16</td>
+			<td>D/WB L</td>
+			<td>SLB</td>
+			<td>0.06</td>
+			<td>0.006</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="2000014927">
+			<td>DL</td>
+			<td>77</td>
+			<td><span>Pérez, Pablo</span></td>
+			<td>18</td>
+			<td>D/WB/AM L</td>
+			<td>Sevilla</td>
+			<td>1.2</td>
+			<td>0.03</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="28121372">
+			<td>DL</td>
+			<td>74</td>
+			<td><span>Maatsen, Ian</span></td>
+			<td>18</td>
+			<td>D/WB L, M C</td>
+			<td>Chelsea</td>
+			<td>7.5</td>
+			<td>0.2</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="24054803">
+			<td>DL</td>
+			<td>80</td>
+			<td><span>Bradaric, Domagoj</span></td>
+			<td>20</td>
+			<td>D/WB L</td>
+			<td>LOSC</td>
+			<td>8.4</td>
+			<td>0.6</td>
+			<td>hr</td>
+		</tr>
+		<tr data-player-id="2000013543">
+			<td>DL</td>
+			<td>77</td>
+			<td><span>Aning, Prince</span></td>
+			<td>16</td>
+			<td>D/WB L</td>
+			<td>Ajax</td>
+			<td>0.09</td>
+			<td>0.02</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="67277687">
+			<td>DL</td>
+			<td>81</td>
+			<td><span>Herrero, Toni</span></td>
+			<td>19</td>
+			<td>D/WB L</td>
+			<td>Levante</td>
+			<td>1.2</td>
+			<td>0.03</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="28111507" class="paf">
+			<td>DL</td>
+			<td>82</td>
+			<td><span>Mitchell, Tyrick</span></td>
+			<td>20</td>
+			<td>D/WB L</td>
+			<td>Crystal Palace</td>
+			<td>0.5</td>
+			<td>3.7</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="88024471" class="pab">
+			<td>DL</td>
+			<td>82</td>
+			<td><span>Cacace, Liberato</span></td>
+			<td>19</td>
+			<td>D/WB L</td>
+			<td>STVV</td>
+			<td>6.1</td>
+			<td>0.5</td>
+			<td>nz</td>
+		</tr>
+		<tr data-player-id="91195878">
+			<td>DL</td>
+			<td>79</td>
+			<td><span>Netz, Luca</span></td>
+			<td>17</td>
+			<td>D/WB L</td>
+			<td>Hertha BSC</td>
+			<td>0.06</td>
+			<td>0.03</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="2000041895">
+			<td>DL</td>
+			<td>76</td>
+			<td><span>Candelaria, Jayden</span></td>
+			<td>16</td>
+			<td>D LC</td>
+			<td>Feyenoord</td>
+			<td>0.09</td>
+			<td>0.03</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="37058888" class="pab">
+			<td>DL</td>
+			<td>85</td>
+			<td><span>Wijndal, Owen</span></td>
+			<td>20</td>
+			<td>D/WB/M L</td>
+			<td>AZ</td>
+			<td>3.8</td>
+			<td>2.8</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="67245235" class="paf">
+			<td>DL</td>
+			<td>77</td>
+			<td><span>Fran García</span></td>
+			<td>20</td>
+			<td>D/WB/AM L</td>
+			<td>R. Madrid</td>
+			<td>1.6</td>
+			<td>0.06</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67294854" class="pab">
+			<td>DL</td>
+			<td>85</td>
+			<td><span>De la Víbora, David</span></td>
+			<td>17</td>
+			<td>D/WB/M L</td>
+			<td>R. Madrid</td>
+			<td>0.3</td>
+			<td>0.007</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="20041862" class="pah">
+			<td>DL</td>
+			<td>78</td>
+			<td><span>Davies, Alphonso</span></td>
+			<td>19</td>
+			<td>D/WB L, AM RL</td>
+			<td>FC Bayern</td>
+			<td>87.6</td>
+			<td>6</td>
+			<td>ca</td>
+		</tr>
+		<tr data-player-id="83257795">
+			<td>DL</td>
+			<td>78</td>
+			<td><span>Lelo, Leonardo</span></td>
+			<td>20</td>
+			<td>D/WB/AM L</td>
+			<td>Olhanense</td>
+			<td>0.2</td>
+			<td>0.04</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="67293498" class="paf">
+			<td>DL</td>
+			<td>79</td>
+			<td><span>Romero, Cristo</span></td>
+			<td>20</td>
+			<td>D/WB/AM L</td>
+			<td>Málaga</td>
+			<td>1.8</td>
+			<td>0.08</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67246344" class="paf">
+			<td>DL</td>
+			<td>77</td>
+			<td><span>Centelles, Álex</span></td>
+			<td>20</td>
+			<td>D/WB L</td>
+			<td>Almería</td>
+			<td>5.3</td>
+			<td>0.2</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="28117365">
+			<td>DL</td>
+			<td>79</td>
+			<td><span>Thomas, Luke</span></td>
+			<td>19</td>
+			<td>D/WB/M L</td>
+			<td>Leicester</td>
+			<td>25</td>
+			<td>0.4</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="29236824">
+			<td>DL</td>
+			<td>73</td>
+			<td><span>Daley, Luke</span></td>
+			<td>18</td>
+			<td>D/WB/AM L</td>
+			<td>Huddersfield</td>
+			<td>0.1</td>
+			<td>0.004</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="67296654">
+			<td>DL</td>
+			<td>78</td>
+			<td><span>Balde, Alejandro</span></td>
+			<td>17</td>
+			<td>D/WB/AM L</td>
+			<td>Barcelona</td>
+			<td>0.9</td>
+			<td>0.02</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="28122834">
+			<td>DL</td>
+			<td>81</td>
+			<td><span>Cirkin, Dennis</span></td>
+			<td>18</td>
+			<td>D/WB L</td>
+			<td>Tottenham</td>
+			<td>1.5</td>
+			<td>0.2</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="2000030287">
+			<td>DL</td>
+			<td>79</td>
+			<td><span>Larios, Juan</span></td>
+			<td>16</td>
+			<td>D/WB L</td>
+			<td>Man City</td>
+			<td>0.1</td>
+			<td>0.01</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="72049936">
+			<td>DL</td>
+			<td>79</td>
+			<td><span>Bello, George</span></td>
+			<td>18</td>
+			<td>D/WB L</td>
+			<td>Atlanta United</td>
+			<td>1.2</td>
+			<td>0.8</td>
+			<td>us</td>
+		</tr>
+		<tr data-player-id="2000045455">
+			<td>DL</td>
+			<td>74</td>
+			<td><span>Chrisene, Ben</span></td>
+			<td>16</td>
+			<td>D/WB L, AM LC</td>
+			<td>Aston Villa</td>
+			<td>0.1</td>
+			<td>0.02</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="70114391" class="paf">
+			<td>DL</td>
+			<td>78</td>
+			<td><span>Sertel, Cemali</span></td>
+			<td>20</td>
+			<td>D LC</td>
+			<td>Basaksehir</td>
+			<td>5.9</td>
+			<td>2.5</td>
+			<td>tr</td>
+		</tr>
+		<tr data-player-id="19383257">
+			<td>DR</td>
+			<td>81</td>
+			<td><span>Yan Couto</span></td>
+			<td>18</td>
+			<td>D/WB R</td>
+			<td>Man City</td>
+			<td>5</td>
+			<td>0.2</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="71099085">
+			<td>DR</td>
+			<td>75</td>
+			<td><span>Konoplya, Yukhym</span></td>
+			<td>20</td>
+			<td>D/WB RL</td>
+			<td>Shakhtar</td>
+			<td>1.7</td>
+			<td>0.2</td>
+			<td>ua</td>
+		</tr>
+		<tr data-player-id="83228786" class="pab">
+			<td>DR</td>
+			<td>83</td>
+			<td><span>Esteves, Tomás</span></td>
+			<td>18</td>
+			<td>D/WB R</td>
+			<td>FCP</td>
+			<td>3.4</td>
+			<td>0.3</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="28127367">
+			<td>DR</td>
+			<td>77</td>
+			<td><span>Scott, Jack</span></td>
+			<td>17</td>
+			<td>D/WB R</td>
+			<td>Wolves</td>
+			<td>0.7</td>
+			<td>0.04</td>
+			<td>gb-nir</td>
+		</tr>
+		<tr data-player-id="83228783">
+			<td>DR</td>
+			<td>82</td>
+			<td><span>Pinheiro, Rodrigo</span></td>
+			<td>17</td>
+			<td>D/WB R</td>
+			<td>FCP</td>
+			<td>1.2</td>
+			<td>0.01</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="83243055">
+			<td>DR</td>
+			<td>80</td>
+			<td><span>Cruz, Filipe</span></td>
+			<td>18</td>
+			<td>D/WB/AM R</td>
+			<td>SLB</td>
+			<td>1.6</td>
+			<td>0.01</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="29173977" class="pab">
+			<td>DR</td>
+			<td class="fpa">86</td>
+			<td><span>Aarons, Max</span></td>
+			<td>20</td>
+			<td>D/WB R</td>
+			<td>Norwich</td>
+			<td>18</td>
+			<td>14.9</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="49056280">
+			<td>DR</td>
+			<td>82</td>
+			<td><span>Gusto, Malo</span></td>
+			<td>17</td>
+			<td>D/WB R, M C</td>
+			<td>OL</td>
+			<td>0.5</td>
+			<td>0.04</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="49045184">
+			<td>DR</td>
+			<td>81</td>
+			<td><span>Kalulu, Pierre</span></td>
+			<td>20</td>
+			<td>D/WB R</td>
+			<td>Milan</td>
+			<td>16</td>
+			<td>0.1</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="28124569">
+			<td>DR</td>
+			<td>75</td>
+			<td><span>Livramento, Valentino</span></td>
+			<td>17</td>
+			<td>D/WB/AM R</td>
+			<td>Chelsea</td>
+			<td>1.2</td>
+			<td>0.1</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="28115828">
+			<td>DR</td>
+			<td>81</td>
+			<td><span>Laird, Ethan</span></td>
+			<td>18</td>
+			<td>D/WB RL</td>
+			<td>Man Utd</td>
+			<td>4</td>
+			<td>4.3</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="67293813">
+			<td>DR</td>
+			<td>80</td>
+			<td><span>Joseda</span></td>
+			<td>18</td>
+			<td>D RC</td>
+			<td>Valencia</td>
+			<td>2.4</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="91172542" class="paf">
+			<td>DR</td>
+			<td>79</td>
+			<td><span>Beyer, Louis</span></td>
+			<td>20</td>
+			<td>D RC</td>
+			<td>Gladbach</td>
+			<td>4.1</td>
+			<td>1.1</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="67268221" class="pab">
+			<td>DR</td>
+			<td class="fpa">76</td>
+			<td><span>Porro, Pedro</span></td>
+			<td>20</td>
+			<td>D/WB R, AM RC</td>
+			<td>Man City</td>
+			<td>30</td>
+			<td>14.2</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="37073593" class="pab">
+			<td>DR</td>
+			<td>80</td>
+			<td><span>Hoever, Ki-Jana</span></td>
+			<td>18</td>
+			<td>D RC</td>
+			<td>Wolves</td>
+			<td>12</td>
+			<td>0.2</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="91184445" class="pab">
+			<td>DR</td>
+			<td class="fpa">81</td>
+			<td><span>Vagnoman, Josha</span></td>
+			<td>19</td>
+			<td>D/WB RL</td>
+			<td>Hamburger SV</td>
+			<td>7</td>
+			<td>0.3</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="67257950">
+			<td>DR</td>
+			<td>81</td>
+			<td><span>Víctor Gómez</span></td>
+			<td>20</td>
+			<td>D/WB R</td>
+			<td>Espanyol</td>
+			<td>5.6</td>
+			<td>0.3</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="37065767" class="pab">
+			<td>DR</td>
+			<td>80</td>
+			<td><span>Dest, Sergiño</span></td>
+			<td>19</td>
+			<td>D/WB RL, M R</td>
+			<td>Barcelona</td>
+			<td>25.2</td>
+			<td>10</td>
+			<td>us</td>
+		</tr>
+		<tr data-player-id="28112993" class="pab">
+			<td>DR</td>
+			<td>75</td>
+			<td><span>Lamptey, Tariq</span></td>
+			<td>19</td>
+			<td>D/WB RL, M R</td>
+			<td>Brighton</td>
+			<td>5</td>
+			<td>15.9</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="2000032704">
+			<td>DR</td>
+			<td>79</td>
+			<td><span>Jurado, Marc</span></td>
+			<td>16</td>
+			<td>D R</td>
+			<td>Man Utd</td>
+			<td>0.1</td>
+			<td>0.02</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67271373" class="paf">
+			<td>DR</td>
+			<td>78</td>
+			<td><span>Casas, Ismael</span></td>
+			<td>19</td>
+			<td>D RC</td>
+			<td>Málaga</td>
+			<td>1.8</td>
+			<td>0.2</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="29179807">
+			<td>DR</td>
+			<td>79</td>
+			<td><span>Bogle, Jayden</span></td>
+			<td>20</td>
+			<td>D/WB R</td>
+			<td>Sheff Utd</td>
+			<td>20</td>
+			<td>4.8</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="28108035" class="pah">
+			<td>DR</td>
+			<td class="fpa">86</td>
+			<td><span>James, Reece</span></td>
+			<td>20</td>
+			<td>D/WB R, M C</td>
+			<td>Chelsea</td>
+			<td>60</td>
+			<td>25.6</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="28115792">
+			<td>DR</td>
+			<td>78</td>
+			<td><span>Williams, Neco</span></td>
+			<td>19</td>
+			<td>D/WB R</td>
+			<td>Liverpool</td>
+			<td>8</td>
+			<td>1.8</td>
+			<td>gb-wls</td>
+		</tr>
+		<tr data-player-id="28113828" class="paf">
+			<td>DR</td>
+			<td>77</td>
+			<td><span>Frimpong, Jeremie</span></td>
+			<td>19</td>
+			<td>D/WB RL</td>
+			<td>Celtic</td>
+			<td>8</td>
+			<td>4.3</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="43272248">
+			<td>DR</td>
+			<td>82</td>
+			<td><span>Zappa, Gabriele</span></td>
+			<td>20</td>
+			<td>D/WB/M R</td>
+			<td>Pescara</td>
+			<td>5.3</td>
+			<td>2</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="67258040" class="pab">
+			<td>DM</td>
+			<td class="fpa">83</td>
+			<td><span>Gustavo Assunção</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>Famalicão</td>
+			<td>2</td>
+			<td>3.7</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="43372892" class="pab">
+			<td>DM</td>
+			<td>82</td>
+			<td><span>Rovella, Nicolò</span></td>
+			<td>18</td>
+			<td>DM</td>
+			<td>Genoa</td>
+			<td>0.2</td>
+			<td>0.7</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="78084541" class="pab">
+			<td>DM</td>
+			<td>82</td>
+			<td><span>Ugarte, Manuel</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>Fénix</td>
+			<td>1.6</td>
+			<td>1.2</td>
+			<td>uy</td>
+		</tr>
+		<tr data-player-id="83243058">
+			<td>DM</td>
+			<td>79</td>
+			<td><span>Brito, Rafael</span></td>
+			<td>18</td>
+			<td>D C, DM</td>
+			<td>SLB</td>
+			<td>2.7</td>
+			<td>0.1</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="18107452" class="pab">
+			<td>DM</td>
+			<td>83</td>
+			<td><span>Kana, Marco</span></td>
+			<td>17</td>
+			<td>D C, DM</td>
+			<td>Anderlecht</td>
+			<td>4.5</td>
+			<td>0.1</td>
+			<td>be</td>
+		</tr>
+		<tr data-player-id="24065096">
+			<td>DM</td>
+			<td>79</td>
+			<td><span>Duvnjak, Tomislav</span></td>
+			<td>17</td>
+			<td>DM</td>
+			<td>Dinamo</td>
+			<td>0.2</td>
+			<td>0.01</td>
+			<td>hr</td>
+		</tr>
+		<tr data-player-id="28121438">
+			<td>DM</td>
+			<td>78</td>
+			<td><span>Clarkson, Leighton</span></td>
+			<td>18</td>
+			<td>DM</td>
+			<td>Liverpool</td>
+			<td>0.7</td>
+			<td>0.04</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="12078756">
+			<td>DM</td>
+			<td>78</td>
+			<td><span>Diakité, Ousmane</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>FC RB Salzburg</td>
+			<td>0.7</td>
+			<td>0.3</td>
+			<td>ml</td>
+		</tr>
+		<tr data-player-id="22081455">
+			<td>DM</td>
+			<td>78</td>
+			<td><span>Krastev, Dimo</span></td>
+			<td>17</td>
+			<td>DM</td>
+			<td>Fiorentina</td>
+			<td>0.2</td>
+			<td>0.05</td>
+			<td>bg</td>
+		</tr>
+		<tr data-player-id="43298484">
+			<td>DM</td>
+			<td>78</td>
+			<td><span>Viviani, Mattia</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>Chievo</td>
+			<td>3.2</td>
+			<td>0.7</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="83169817" class="pah">
+			<td>DM</td>
+			<td class="fpa">86</td>
+			<td><span>Luís, Florentino</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>SLB</td>
+			<td>16.8</td>
+			<td>6.7</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="37069474">
+			<td>DM</td>
+			<td>79</td>
+			<td><span>Reis, Ludovit</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>Barcelona</td>
+			<td>6.1</td>
+			<td>0.1</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="43298481" class="pah">
+			<td>DM</td>
+			<td class="fpa">87</td>
+			<td><span>Tonali, Sandro</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>Brescia</td>
+			<td>38.3</td>
+			<td>10.4</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="19302918">
+			<td>DM</td>
+			<td>78</td>
+			<td><span>Victor Bobsin</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>GRE</td>
+			<td>1</td>
+			<td>0.1</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="2000045887">
+			<td>DM</td>
+			<td>80</td>
+			<td><span>Lütke-Frie, Dennis</span></td>
+			<td>17</td>
+			<td>DM</td>
+			<td>Borussia Dortmund</td>
+			<td>0.06</td>
+			<td>0.01</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="19376884">
+			<td>DM</td>
+			<td>78</td>
+			<td><span>Bruno Gomes</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>VDG</td>
+			<td>2.6</td>
+			<td>0.6</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="67263880">
+			<td>DM</td>
+			<td>75</td>
+			<td><span>Gragera, José</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>S. Gijón</td>
+			<td>2.3</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="21040162" class="paf">
+			<td>DM</td>
+			<td>76</td>
+			<td><span>Djokanovic, Andrej</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>Sarajevo</td>
+			<td>0.1</td>
+			<td>0.001</td>
+			<td>ba</td>
+		</tr>
+		<tr data-player-id="43317730">
+			<td>DM</td>
+			<td>78</td>
+			<td><span>Esposito, Salvatore</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>SPAL</td>
+			<td>5.2</td>
+			<td>1.1</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="48043868">
+			<td>DM</td>
+			<td>78</td>
+			<td><span>Mendy, Batista</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>FC Nantes</td>
+			<td>4.2</td>
+			<td>0.5</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="67295653">
+			<td>DM</td>
+			<td>78</td>
+			<td><span>Morante, Iván</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>R. Madrid</td>
+			<td>0.5</td>
+			<td>0.02</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="95078952" class="pab">
+			<td>DM</td>
+			<td>81</td>
+			<td><span>Tijani, Samson</span></td>
+			<td>18</td>
+			<td>D C, DM</td>
+			<td>FC RB Ralzburg</td>
+			<td>2.2</td>
+			<td>0.1</td>
+			<td>ng</td>
+		</tr>
+		<tr data-player-id="29233761">
+			<td>DM</td>
+			<td>79</td>
+			<td><span>Kenneh, Nohan</span></td>
+			<td>17</td>
+			<td>D C, DM</td>
+			<td>Leeds</td>
+			<td>0.5</td>
+			<td>0.2</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="49047253">
+			<td>DM</td>
+			<td>79</td>
+			<td><span>Massengo, Han-Noah</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>Bristol City</td>
+			<td>5</td>
+			<td>0.4</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="19371629">
+			<td>DM</td>
+			<td>79</td>
+			<td><span>Diego Rosa</span></td>
+			<td>17</td>
+			<td>DM</td>
+			<td>GRE</td>
+			<td>0.6</td>
+			<td>0.04</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="19368081">
+			<td>DM</td>
+			<td>79</td>
+			<td><span>Sandry</span></td>
+			<td>17</td>
+			<td>DM</td>
+			<td>SAN</td>
+			<td>2.8</td>
+			<td>0.6</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="18115012">
+			<td>DM</td>
+			<td>77</td>
+			<td><span>Lavia, Roméo</span></td>
+			<td>16</td>
+			<td>DM</td>
+			<td>Man City</td>
+			<td>0.1</td>
+			<td>0.1</td>
+			<td>be</td>
+		</tr>
+		<tr data-player-id="67260207">
+			<td>DM</td>
+			<td>77</td>
+			<td><span>Vencedor, Unai</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>A. Bilbao</td>
+			<td>4.3</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="43317768">
+			<td>DM</td>
+			<td>80</td>
+			<td><span>Ghion, Andrea</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>Sassuolo</td>
+			<td>2.6</td>
+			<td>0.1</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="14181373" class="pab">
+			<td>DM</td>
+			<td>83</td>
+			<td><span>Vera, Fausto</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>Argentinos Jrs.</td>
+			<td>3.2</td>
+			<td>1.7</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="13194021" class="paf">
+			<td>DM</td>
+			<td>77</td>
+			<td><span>Doucouré, Cheick</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>RC Lens</td>
+			<td>2.4</td>
+			<td>0.6</td>
+			<td>ml</td>
+		</tr>
+		<tr data-player-id="2000024755">
+			<td>DM</td>
+			<td>79</td>
+			<td><span>Faticanti, Giacomo</span></td>
+			<td>15</td>
+			<td>DM</td>
+			<td>Roma</td>
+			<td>0.2</td>
+			<td>0.001</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="49048599">
+			<td>DM</td>
+			<td>80</td>
+			<td><span>Chotard, Joris</span></td>
+			<td>18</td>
+			<td>DM</td>
+			<td>Montpellier</td>
+			<td>4.8</td>
+			<td>0.7</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="219032">
+			<td>DM</td>
+			<td>79</td>
+			<td><span>Orellana, Jandro</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>Barcelona</td>
+			<td>3.9</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="58140558">
+			<td>DM</td>
+			<td>78</td>
+			<td><span>Umyarov, Nail</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>Spartak Moscow</td>
+			<td>14.5</td>
+			<td>0.4</td>
+			<td>ru</td>
+		</tr>
+		<tr data-player-id="28116496" class="pab">
+			<td>DM</td>
+			<td>83</td>
+			<td><span>Skipp, Oliver</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>Tottenham</td>
+			<td>25</td>
+			<td>7.5</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="29162693">
+			<td>DM</td>
+			<td>76</td>
+			<td><span>Pizzuto, Eugenio</span></td>
+			<td>18</td>
+			<td>DM</td>
+			<td>LOSC</td>
+			<td>0.9</td>
+			<td>0.1</td>
+			<td>mx</td>
+		</tr>
+		<tr data-player-id="48043084" class="pab">
+			<td>DM</td>
+			<td>83</td>
+			<td><span>Kamara, Boubacar</span></td>
+			<td>20</td>
+			<td>D C, DM</td>
+			<td>OM</td>
+			<td>46.2</td>
+			<td>9.2</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="91177336">
+			<td>DM</td>
+			<td>80</td>
+			<td><span>Krauß, Tom</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>RB Leipzig</td>
+			<td>3.1</td>
+			<td>0.12</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="91184426">
+			<td>DM</td>
+			<td>78</td>
+			<td><span>Stiller, Angelo</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>FC Bayern</td>
+			<td>0.8</td>
+			<td>0.28</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="73200890">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Bertelli, Ugo</span></td>
+			<td>17</td>
+			<td>M C</td>
+			<td>OM</td>
+			<td>1.8</td>
+			<td>0.03</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="83174755" class="pab">
+			<td>CM</td>
+			<td class="fpa">84</td>
+			<td><span>Baró, Romário</span></td>
+			<td>20</td>
+			<td>M C</td>
+			<td>FCP</td>
+			<td>3.4</td>
+			<td>1.5</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="39057654">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>Jóhannesson, Ísak Bergmann</span></td>
+			<td>17</td>
+			<td>D/WB L, AM RLC</td>
+			<td>IFK Norrköping</td>
+			<td>1.4</td>
+			<td>0.2</td>
+			<td>is</td>
+		</tr>
+		<tr data-player-id="37071197" class="pah">
+			<td>CM</td>
+			<td>87</td>
+			<td><span>Gravenberch, Ryan</span></td>
+			<td>18</td>
+			<td>DM, AM LC</td>
+			<td>Ajax</td>
+			<td>2.9</td>
+			<td>1.6</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="49040111">
+			<td>CM</td>
+			<td>80</td>
+			<td><span>Ponceau, Julien</span></td>
+			<td>19</td>
+			<td>AM C</td>
+			<td>FC Lorient</td>
+			<td>1.7</td>
+			<td>0.3</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="37073317" class="pab">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>Taylor, Kenneth</span></td>
+			<td>18</td>
+			<td>D C, DM, M RLC</td>
+			<td>Ajax</td>
+			<td>1.3</td>
+			<td>0.4</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="67246431" class="paf">
+			<td>CM</td>
+			<td>76</td>
+			<td><span>Lozano, Pol</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>Espanyol</td>
+			<td>1.6</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="43372274">
+			<td>CM</td>
+			<td>82</td>
+			<td><span>Gyabuaa, Emmanuel</span></td>
+			<td>18</td>
+			<td>DM</td>
+			<td>Atalanta</td>
+			<td>0.5</td>
+			<td>0.08</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="67279753" class="pag">
+			<td>CM</td>
+			<td>88</td>
+			<td><span>Ilaix Moriba</span></td>
+			<td>17</td>
+			<td>DM, AM C</td>
+			<td>Barcelona</td>
+			<td>11.5</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="48042326">
+			<td>CM</td>
+			<td>77</td>
+			<td><span>Tchouameni, Aurélien</span></td>
+			<td>20</td>
+			<td>M C</td>
+			<td>AS Monaco</td>
+			<td>11.5</td>
+			<td>0.7</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="2000006277" class="pab">
+			<td>CM</td>
+			<td>86</td>
+			<td><span>Dwomoh, Pierre</span></td>
+			<td>16</td>
+			<td>AM RC, F C</td>
+			<td>KRC Genk</td>
+			<td>0.05</td>
+			<td>0.1</td>
+			<td>be</td>
+		</tr>
+		<tr data-player-id="67258414" class="pab">
+			<td>CM</td>
+			<td>85</td>
+			<td><span>Gómez, Sergio</span></td>
+			<td>19</td>
+			<td>AM RLC</td>
+			<td>Borussia Dortmund</td>
+			<td>14</td>
+			<td>0.8</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="29216803">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Sibley, Louie</span></td>
+			<td>18</td>
+			<td>AM C</td>
+			<td>Derby</td>
+			<td>6</td>
+			<td>2.1</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="67288555">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>Simons, Xavi</span></td>
+			<td>17</td>
+			<td>DM</td>
+			<td>Paris SG</td>
+			<td>0.5</td>
+			<td>0.04</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="43390774">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>Ricci, Samuele</span></td>
+			<td>18</td>
+			<td>DM</td>
+			<td>Empoli</td>
+			<td>5.2</td>
+			<td>1.2</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="83152928" class="paf">
+			<td>CM</td>
+			<td>77</td>
+			<td><span>Almeida, André</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Vit. Guimarães</td>
+			<td>1.6</td>
+			<td>0.3</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="53151876">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Kitolano, Joshua</span></td>
+			<td>18</td>
+			<td>M C</td>
+			<td>Odd</td>
+			<td>1</td>
+			<td>0.7</td>
+			<td>no</td>
+		</tr>
+		<tr data-player-id="37072834">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Proper, Dirk</span></td>
+			<td>18</td>
+			<td>AM C</td>
+			<td>N.E.C.</td>
+			<td>0.9</td>
+			<td>0.09</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="24055163">
+			<td>CM</td>
+			<td>80</td>
+			<td><span>Palaversa, Ante</span></td>
+			<td>20</td>
+			<td>DM, M LC</td>
+			<td>Man City</td>
+			<td>15</td>
+			<td>1.8</td>
+			<td>hr</td>
+		</tr>
+		<tr data-player-id="67277462">
+			<td>CM</td>
+			<td>80</td>
+			<td><span>Theo</span></td>
+			<td>18</td>
+			<td>AM C</td>
+			<td>R. Madrid</td>
+			<td>1.2</td>
+			<td>0.03</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="2000043570">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>Prioste, Diogo</span></td>
+			<td>16</td>
+			<td>M C</td>
+			<td>SLB</td>
+			<td>0.06</td>
+			<td>0.001</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="49056191">
+			<td>CM</td>
+			<td>76</td>
+			<td><span>Lepenant, Johann</span></td>
+			<td>17</td>
+			<td>M C</td>
+			<td>SM Caen</td>
+			<td>0.4</td>
+			<td>0.02</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="2000055633">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Tejón, Martín</span></td>
+			<td>16</td>
+			<td>AM RLC</td>
+			<td>Valencia</td>
+			<td>0.8</td>
+			<td>0.03</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="83297509">
+			<td>CM</td>
+			<td>82</td>
+			<td><span>Sousa, Vasco</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>FCP</td>
+			<td>1.3</td>
+			<td>0.007</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="37079089">
+			<td>CM</td>
+			<td>83</td>
+			<td><span>Fitz-Jim, Kian</span></td>
+			<td>17</td>
+			<td>AM LC</td>
+			<td>Ajax</td>
+			<td>0.1</td>
+			<td>0.03</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="43372948">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>Fagioli, Nicolò</span></td>
+			<td>19</td>
+			<td>DM, AM C</td>
+			<td>Zebre</td>
+			<td>2.1</td>
+			<td>0.09</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="2000049413" class="pab">
+			<td>CM</td>
+			<td>85</td>
+			<td><span>Gavi</span></td>
+			<td>15</td>
+			<td>AM C</td>
+			<td>Barcelona</td>
+			<td>0.06</td>
+			<td>0.04</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="19364339">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Lucas Ramos</span></td>
+			<td>19</td>
+			<td>M C</td>
+			<td>INT</td>
+			<td>0.1</td>
+			<td>0.007</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="29175220">
+			<td>CM</td>
+			<td>82</td>
+			<td><span>Gibbs-White, Morgan</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Wolves</td>
+			<td>15</td>
+			<td>6.8</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="49056369" class="pab">
+			<td>CM</td>
+			<td>84</td>
+			<td><span>Hannibal</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>Man Utd</td>
+			<td>5</td>
+			<td>0.2</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="67298778">
+			<td>CM</td>
+			<td>76</td>
+			<td><span>Gutiérrez, Ismael</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>A. Madrid</td>
+			<td>4.6</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="29174741" class="pab">
+			<td>CM</td>
+			<td class="fpa">82</td>
+			<td><span>Shackleton, Jamie</span></td>
+			<td>20</td>
+			<td>M C</td>
+			<td>Leeds</td>
+			<td>1.7</td>
+			<td>5.5</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="14238164">
+			<td>CM</td>
+			<td>82</td>
+			<td><span>Alcaraz, Carlos</span></td>
+			<td>17</td>
+			<td>AM RC</td>
+			<td>Racing Club</td>
+			<td>0.5</td>
+			<td>0.7</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="28116269">
+			<td>CM</td>
+			<td>80</td>
+			<td><span>Tagseth, Edvard</span></td>
+			<td>19</td>
+			<td>DM, AM LC</td>
+			<td>Rosenborg</td>
+			<td>2</td>
+			<td>0.02</td>
+			<td>no</td>
+		</tr>
+		<tr data-player-id="39056706">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>Baldursson, Andri Fannar</span></td>
+			<td>18</td>
+			<td>AM C</td>
+			<td>Bologna</td>
+			<td>4.3</td>
+			<td>0.1</td>
+			<td>is</td>
+		</tr>
+		<tr data-player-id="14217325">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Barrenechea, Enzo</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>Zebre</td>
+			<td>1.9</td>
+			<td>0.08</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="67246433" class="pab">
+			<td>CM</td>
+			<td class="fpa">81</td>
+			<td><span>Monchu</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>Barcelona</td>
+			<td>3.9</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67256515" class="pah">
+			<td>CM</td>
+			<td class="fpa">83</td>
+			<td><span>Blanco, Antonio</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>R. Madrid</td>
+			<td>4.6</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="49048363" class="pab">
+			<td>CM</td>
+			<td>84</td>
+			<td><span>Koba Lein</span></td>
+			<td>18</td>
+			<td>M C</td>
+			<td>Valencia</td>
+			<td>3.2</td>
+			<td>0.1</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="29173647">
+			<td>CM</td>
+			<td>80</td>
+			<td><span>Longstaff, Matty</span></td>
+			<td>20</td>
+			<td>DM, AM C</td>
+			<td>Newcastle</td>
+			<td>25</td>
+			<td>8.6</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="93069729" class="pab">
+			<td>CM</td>
+			<td class="fpa">82</td>
+			<td><span>Cajuste, Jens</span></td>
+			<td>20</td>
+			<td>D/WB R, DM, M RC</td>
+			<td>FC Midtjylland</td>
+			<td>4.6</td>
+			<td>0.3</td>
+			<td>se</td>
+		</tr>
+		<tr data-player-id="67258407" class="pab">
+			<td>CM</td>
+			<td>84</td>
+			<td><span>Puig, Riqui</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Barcelona</td>
+			<td>5.9</td>
+			<td>2.8</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="83174762" class="pah">
+			<td>CM</td>
+			<td class="fpa">88</td>
+			<td><span>Ferreira, Vítor</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>FCP</td>
+			<td>2</td>
+			<td>1</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="43425633">
+			<td>CM</td>
+			<td>80</td>
+			<td><span>Palumbo, Martin</span></td>
+			<td>18</td>
+			<td>AM C</td>
+			<td>Udinese</td>
+			<td>0.2</td>
+			<td>0.2</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="2000047228">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>Patino, Charlie</span></td>
+			<td>16</td>
+			<td>DM</td>
+			<td>Arsenal</td>
+			<td>0.1</td>
+			<td>0.06</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="24057489">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>Bulat, Marko</span></td>
+			<td>18</td>
+			<td>DM, AM C</td>
+			<td>Sibenik</td>
+			<td>0.1</td>
+			<td>0.04</td>
+			<td>hr</td>
+		</tr>
+		<tr data-player-id="48042512" class="pah">
+			<td>CM</td>
+			<td class="fpa">87</td>
+			<td><span>Cuisance, Mickaël</span></td>
+			<td>20</td>
+			<td>DM, AM C</td>
+			<td>FC Bayern</td>
+			<td>43.9</td>
+			<td>2.3</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="18113140" class="pab">
+			<td>CM</td>
+			<td>82</td>
+			<td><span>Vranckx, Aster</span></td>
+			<td>17</td>
+			<td>DM, AM C</td>
+			<td>KV Mechelen</td>
+			<td>2.2</td>
+			<td>0.5</td>
+			<td>be</td>
+		</tr>
+		<tr data-player-id="88026183" class="pab">
+			<td>CM</td>
+			<td class="fpa">84</td>
+			<td><span>Stamenic, Marko</span></td>
+			<td>18</td>
+			<td>DM, AM C</td>
+			<td>FC København</td>
+			<td>1.2</td>
+			<td>0.005</td>
+			<td>nz</td>
+		</tr>
+		<tr data-player-id="28122840">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>White, Harvey</span></td>
+			<td>18</td>
+			<td>DM</td>
+			<td>Tottenham</td>
+			<td>1.5</td>
+			<td>0.5</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="16254093" class="pab">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>Sucic, Luka</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>FC RB Salzburg</td>
+			<td>1.3</td>
+			<td>0.1</td>
+			<td>hr</td>
+		</tr>
+		<tr data-player-id="70110777">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>Kapi, Mustafa</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>LOSC</td>
+			<td>0.5</td>
+			<td>0.02</td>
+			<td>tr</td>
+		</tr>
+		<tr data-player-id="62201068">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Ilic, Ivan</span></td>
+			<td>19</td>
+			<td>DM, AM C</td>
+			<td>Man City</td>
+			<td>5</td>
+			<td>1.8</td>
+			<td>rs</td>
+		</tr>
+		<tr data-player-id="43297054">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>Portanova, Manolo</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Zebre</td>
+			<td>3.3</td>
+			<td>0.1</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="19302475">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>Caio Lopes</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>VDG</td>
+			<td>0.7</td>
+			<td>0.05</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="13193983">
+			<td>CM</td>
+			<td>77</td>
+			<td><span>Camara, Mohamed</span></td>
+			<td>20</td>
+			<td>M C</td>
+			<td>FC RB Salzburg</td>
+			<td>2.7</td>
+			<td>0.3</td>
+			<td>ml</td>
+		</tr>
+		<tr data-player-id="43318320">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Brescianini, Marco</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>Milan</td>
+			<td>4.4</td>
+			<td>0.2</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="29179387" class="paf">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Henderson, Ewan</span></td>
+			<td>20</td>
+			<td>AM RLC</td>
+			<td>Celtic</td>
+			<td>1.5</td>
+			<td>0.04</td>
+			<td>gb-sct</td>
+		</tr>
+		<tr data-player-id="27135742">
+			<td>CM</td>
+			<td>80</td>
+			<td><span>Nartey, Nikolas</span></td>
+			<td>20</td>
+			<td>DM, AM C</td>
+			<td>VfB Stuttgart</td>
+			<td>4.1</td>
+			<td>0.1</td>
+			<td>dk</td>
+		</tr>
+		<tr data-player-id="58123749">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>Utkin, Daniil</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Krasnodar</td>
+			<td>14.6</td>
+			<td>0.4</td>
+			<td>ru</td>
+		</tr>
+		<tr data-player-id="19335628" class="pab">
+			<td>CM</td>
+			<td class="fpa">81</td>
+			<td><span>Patrick de Paula</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>SEP</td>
+			<td>6.9</td>
+			<td>2.3</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="37085003">
+			<td>CM</td>
+			<td>76</td>
+			<td><span>Jimenez, Mylian</span></td>
+			<td>17</td>
+			<td>M C</td>
+			<td>PSV</td>
+			<td>0.2</td>
+			<td>0.03</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="24065108">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Baturina, Martin</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>Dinamo</td>
+			<td>0.1</td>
+			<td>0.006</td>
+			<td>hr</td>
+		</tr>
+		<tr data-player-id="48044568" class="pab">
+			<td>CM</td>
+			<td>84</td>
+			<td><span>Adli, Yacine</span></td>
+			<td>19</td>
+			<td>AM RC</td>
+			<td>Bordeaux</td>
+			<td>16.8</td>
+			<td>2.5</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="14227360">
+			<td>CM</td>
+			<td>80</td>
+			<td><span>Perrone, Máximo</span></td>
+			<td>17</td>
+			<td>DM</td>
+			<td>Vélez</td>
+			<td>1.2</td>
+			<td>0.4</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="28115831">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Garner, James</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>Man Utd</td>
+			<td>10</td>
+			<td>6.4</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="28106684" class="pab">
+			<td>CM</td>
+			<td class="fpa">82</td>
+			<td><span>Willock, Joe</span></td>
+			<td>20</td>
+			<td>M C</td>
+			<td>Arsenal</td>
+			<td>40</td>
+			<td>15.9</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="2000048839">
+			<td>CM</td>
+			<td>82</td>
+			<td><span>Alastuey, Jorge</span></td>
+			<td>17</td>
+			<td>DM, AM C</td>
+			<td>Barcelona</td>
+			<td>1</td>
+			<td>0.05</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="18107444">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Matazo, Eliot</span></td>
+			<td>18</td>
+			<td>DM, M RC</td>
+			<td>AS Monaco</td>
+			<td>0.8</td>
+			<td>0.08</td>
+			<td>be</td>
+		</tr>
+		<tr data-player-id="59138154">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>Jaloliddinov, Jasurbek</span></td>
+			<td>18</td>
+			<td>AM RC</td>
+			<td>Lokomotiv Moscow</td>
+			<td>2</td>
+			<td>0.04</td>
+			<td>uz</td>
+		</tr>
+		<tr data-player-id="28106524">
+			<td>CM</td>
+			<td>77</td>
+			<td><span>Harper, Rekeem</span></td>
+			<td>20</td>
+			<td>DM, AM C</td>
+			<td>West Brom</td>
+			<td>10</td>
+			<td>4.8</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="28115835">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Galbraith, Ethan</span></td>
+			<td>19</td>
+			<td>M C</td>
+			<td>Man Utd</td>
+			<td>10</td>
+			<td>0.3</td>
+			<td>gb-nir</td>
+		</tr>
+		<tr data-player-id="49048461" class="pab">
+			<td>CM</td>
+			<td>82</td>
+			<td><span>Agoume, Lucien</span></td>
+			<td>18</td>
+			<td>DM, AM C</td>
+			<td>Inter</td>
+			<td>7.1</td>
+			<td>0.1</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="67295023">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>Alemañ, Pedro</span></td>
+			<td>18</td>
+			<td>AM C</td>
+			<td>Valencia</td>
+			<td>2.4</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="28120038">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Doyle, Tommy</span></td>
+			<td>18</td>
+			<td>DM</td>
+			<td>Man City</td>
+			<td>10</td>
+			<td>0.5</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="83261901">
+			<td>CM</td>
+			<td>80</td>
+			<td><span>Neto, Martim</span></td>
+			<td>17</td>
+			<td>M RC</td>
+			<td>SLB</td>
+			<td>1.3</td>
+			<td>0.007</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="83243057">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>Bernardo, Paulo</span></td>
+			<td>18</td>
+			<td>AM C</td>
+			<td>SLB</td>
+			<td>1.8</td>
+			<td>0.09</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="43372027">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>Riccardi, Alessio</span></td>
+			<td>19</td>
+			<td>AM C</td>
+			<td>Roma</td>
+			<td>16.2</td>
+			<td>0.2</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="67260204" class="pab">
+			<td>CM</td>
+			<td>82</td>
+			<td><span>Sancet, Oihan</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>A. Bilbao</td>
+			<td>8.6</td>
+			<td>1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="49038958">
+			<td>CM</td>
+			<td>80</td>
+			<td><span>Dabo, Abdoulaye</span></td>
+			<td>19</td>
+			<td>M RC</td>
+			<td>FC Nantes</td>
+			<td>3</td>
+			<td>0.3</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="19333767" class="pab">
+			<td>CM</td>
+			<td class="fpa">83</td>
+			<td><span>Gabriel Menino</span></td>
+			<td>19</td>
+			<td>D/WB R, D</td>
+			<td>SEP</td>
+			<td>9.3</td>
+			<td>3.1</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="28108496" class="paf">
+			<td>CM</td>
+			<td>73</td>
+			<td><span>Dele-Bashiru, Tom</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>Watford</td>
+			<td>5</td>
+			<td>0.2</td>
+			<td>ng</td>
+		</tr>
+		<tr data-player-id="43392031">
+			<td>CM</td>
+			<td>80</td>
+			<td><span>Lucas Martello</span></td>
+			<td>20</td>
+			<td>DM, AM C</td>
+			<td>Verona</td>
+			<td>2.4</td>
+			<td>0.1</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="18110528" class="pab">
+			<td>CM</td>
+			<td>86</td>
+			<td><span>De Ketelaere, Charles</span></td>
+			<td>19</td>
+			<td>AM LC</td>
+			<td>Club Brugge</td>
+			<td>7.7</td>
+			<td>1.1</td>
+			<td>be</td>
+		</tr>
+		<tr data-player-id="96145145">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>Kozlowski, Kacper</span></td>
+			<td>16</td>
+			<td>AM C</td>
+			<td>Pogon</td>
+			<td>0.06</td>
+			<td>0.006</td>
+			<td>pl</td>
+		</tr>
+		<tr data-player-id="28127875">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>Chukwuemeka, Carney</span></td>
+			<td>16</td>
+			<td>AM C</td>
+			<td>Aston Villa</td>
+			<td>0.1</td>
+			<td>0.01</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="67276136">
+			<td>CM</td>
+			<td>80</td>
+			<td><span>Blesa, Álex</span></td>
+			<td>18</td>
+			<td>AM C</td>
+			<td>Levante</td>
+			<td>1.4</td>
+			<td>0.05</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="61078265" class="pab">
+			<td>CM</td>
+			<td>82</td>
+			<td><span>Gilmour, Billy</span></td>
+			<td>19</td>
+			<td>AM C</td>
+			<td>Chelsea</td>
+			<td>7.5</td>
+			<td>2.1</td>
+			<td>gb-sct</td>
+		</tr>
+		<tr data-player-id="49048441" class="pab">
+			<td>CM</td>
+			<td>83</td>
+			<td><span>Aouchiche, Adil</span></td>
+			<td>18</td>
+			<td>AM C</td>
+			<td>AS Saint-Etienne</td>
+			<td>16.8</td>
+			<td>0.3</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="12081415">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>N'Guessan, Jean</span></td>
+			<td>17</td>
+			<td>M C</td>
+			<td>RC Abidjan</td>
+			<td>0.1</td>
+			<td>0.1</td>
+			<td>ci</td>
+		</tr>
+		<tr data-player-id="37077008">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Mijnans, Sven</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Sparta</td>
+			<td>0.8</td>
+			<td>0.1</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="19337942" class="pab">
+			<td>CM</td>
+			<td>84</td>
+			<td><span>Marcos Antonio</span></td>
+			<td>20</td>
+			<td>DM</td>
+			<td>Shakhtar</td>
+			<td>6.9</td>
+			<td>2.2</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="14233588">
+			<td>CM</td>
+			<td>77</td>
+			<td><span>Ayala, David</span></td>
+			<td>18</td>
+			<td>DM</td>
+			<td>Estudiantes (LP)</td>
+			<td>1.8</td>
+			<td>0.7</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="37079280">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>Regeer, Youri</span></td>
+			<td>16</td>
+			<td>D C, DM, AM C</td>
+			<td>Ajax</td>
+			<td>0.1</td>
+			<td>0.1</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="86078360" class="pab">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>Caicedo, Moisés</span></td>
+			<td>18</td>
+			<td>DM</td>
+			<td>Independiente del Valle</td>
+			<td>0.8</td>
+			<td>0.09</td>
+			<td>ec</td>
+		</tr>
+		<tr data-player-id="37061602">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Kökçü, Orkun</span></td>
+			<td>19</td>
+			<td>AM C</td>
+			<td>Feyenoord</td>
+			<td>6.1</td>
+			<td>1.1</td>
+			<td>tr</td>
+		</tr>
+		<tr data-player-id="47064795" class="pah">
+			<td>CM</td>
+			<td class="fpa">86</td>
+			<td><span>Elmas, Eljif</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Napoli</td>
+			<td>40</td>
+			<td>7.5</td>
+			<td>mk</td>
+		</tr>
+		<tr data-player-id="96122114">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>Karbownik, Michal</span></td>
+			<td>19</td>
+			<td>D RL, DM</td>
+			<td>Brighton</td>
+			<td>2</td>
+			<td>0.3</td>
+			<td>pl</td>
+		</tr>
+		<tr data-player-id="67276127" class="pab">
+			<td>CM</td>
+			<td>82</td>
+			<td><span>Nico</span></td>
+			<td>18</td>
+			<td>DM</td>
+			<td>Barcelona</td>
+			<td>1.1</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="2000018177">
+			<td>CM</td>
+			<td>76</td>
+			<td><span>Webster, Charlie</span></td>
+			<td>16</td>
+			<td>M C</td>
+			<td>Chelsea</td>
+			<td>0.1</td>
+			<td>0.01</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="2000017219">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Gyabi, Darko</span></td>
+			<td>16</td>
+			<td>AM C</td>
+			<td>Man City</td>
+			<td>0.1</td>
+			<td>0.01</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="48044737" class="pab">
+			<td>CM</td>
+			<td>84</td>
+			<td><span>Caqueret, Maxence</span></td>
+			<td>20</td>
+			<td>DM, AM C</td>
+			<td>OL</td>
+			<td>17.5</td>
+			<td>3.6</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="2000013696">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>Rhein, Torben</span></td>
+			<td>17</td>
+			<td>DM, AM C</td>
+			<td>FC Bayern</td>
+			<td>0.7</td>
+			<td>0.04</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="29232937" class="pah">
+			<td>CM</td>
+			<td>85</td>
+			<td><span>Bellingham, Jude</span></td>
+			<td>17</td>
+			<td>AM RLC</td>
+			<td>Borussia Dortmund</td>
+			<td>0.06</td>
+			<td>1.1</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="98046079">
+			<td>CM</td>
+			<td>75</td>
+			<td><span>Jankewitz, Alexandre</span></td>
+			<td>18</td>
+			<td>DM, AM C</td>
+			<td>Southampton</td>
+			<td>1</td>
+			<td>0.1</td>
+			<td>ch</td>
+		</tr>
+		<tr data-player-id="28129089" class="pab">
+			<td>CM</td>
+			<td>84</td>
+			<td><span>Musah, Yunus</span></td>
+			<td>17</td>
+			<td>AM RC</td>
+			<td>Valencia</td>
+			<td>9.9</td>
+			<td>1.2</td>
+			<td>us</td>
+		</tr>
+		<tr data-player-id="28124578">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Bate, Lewis</span></td>
+			<td>17</td>
+			<td>DM</td>
+			<td>Chelsea</td>
+			<td>0.6</td>
+			<td>0.1</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="67277833">
+			<td>CM</td>
+			<td>76</td>
+			<td><span>Uriarte, Kepa</span></td>
+			<td>18</td>
+			<td>M C</td>
+			<td>A. Bilbao</td>
+			<td>1.1</td>
+			<td>0.03</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67280837" class="paf">
+			<td>CM</td>
+			<td>76</td>
+			<td><span>Enríquez, Ramón</span></td>
+			<td>19</td>
+			<td>DM, AM C</td>
+			<td>Málaga</td>
+			<td>3.5</td>
+			<td>0.2</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="16202373" class="pah">
+			<td>CM</td>
+			<td>84</td>
+			<td><span>Szoboszlai, Dominik</span></td>
+			<td>19</td>
+			<td>AM LC</td>
+			<td>FC RB Salzburg</td>
+			<td>4.3</td>
+			<td>5.8</td>
+			<td>hu</td>
+		</tr>
+		<tr data-player-id="18104192">
+			<td>CM</td>
+			<td>80</td>
+			<td><span>Raskin, Nicolas</span></td>
+			<td>19</td>
+			<td>DM</td>
+			<td>Standard</td>
+			<td>2.2</td>
+			<td>2.6</td>
+			<td>be</td>
+		</tr>
+		<tr data-player-id="42074464" class="pab">
+			<td>CM</td>
+			<td class="fpa">81</td>
+			<td><span>Kartsev, Eden</span></td>
+			<td>20</td>
+			<td>DM, AM C</td>
+			<td>Maccabi Tel-Aviv</td>
+			<td>0.2</td>
+			<td>0.1</td>
+			<td>il</td>
+		</tr>
+		<tr data-player-id="2000015844">
+			<td>CM</td>
+			<td>79</td>
+			<td><span>Rønningen Jørgensen, Filip</span></td>
+			<td>18</td>
+			<td>DM</td>
+			<td>Odd</td>
+			<td>0.7</td>
+			<td>0.7</td>
+			<td>no</td>
+		</tr>
+		<tr data-player-id="53182865">
+			<td>CM</td>
+			<td>80</td>
+			<td><span>Arnstad, Kristian</span></td>
+			<td>16</td>
+			<td>M C</td>
+			<td>Anderlecht</td>
+			<td>1.6</td>
+			<td>0.02</td>
+			<td>no</td>
+		</tr>
+		<tr data-player-id="19367259">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>Neto</span></td>
+			<td>17</td>
+			<td>D/WB R, D</td>
+			<td>AT</td>
+			<td>0.09</td>
+			<td>0.001</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="28127368">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>Campbell, Chem</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>Wolves</td>
+			<td>0.6</td>
+			<td>0.03</td>
+			<td>gb-wls</td>
+		</tr>
+		<tr data-player-id="2000006186">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>Ugochukwu, Lesley</span></td>
+			<td>16</td>
+			<td>M C</td>
+			<td>Rennes</td>
+			<td>0.5</td>
+			<td>0.02</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="49056243" class="pag">
+			<td>CM</td>
+			<td>91</td>
+			<td><span>Camavinga, Eduardo</span></td>
+			<td>17</td>
+			<td>DM</td>
+			<td>Rennes</td>
+			<td>18.9</td>
+			<td>6.5</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="2000049494">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>El Jebari, Salim</span></td>
+			<td>16</td>
+			<td>AM C</td>
+			<td>A. Madrid</td>
+			<td>0.3</td>
+			<td>0.01</td>
+			<td>ma</td>
+		</tr>
+		<tr data-player-id="2000006107">
+			<td>CM</td>
+			<td>77</td>
+			<td><span>Bondo, Warren</span></td>
+			<td>16</td>
+			<td>M C</td>
+			<td>Nancy</td>
+			<td>0.4</td>
+			<td>0.01</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="2000053170" class="pah">
+			<td>CM</td>
+			<td>89</td>
+			<td><span>Pipi</span></td>
+			<td>16</td>
+			<td>AM C</td>
+			<td>R. Madrid</td>
+			<td>1.2</td>
+			<td>0.03</td>
+			<td>jp</td>
+		</tr>
+		<tr data-player-id="13227048">
+			<td>CM</td>
+			<td>78</td>
+			<td><span>Boudaoui, Hicham</span></td>
+			<td>20</td>
+			<td>M C</td>
+			<td>OGC Nice</td>
+			<td>9.7</td>
+			<td>1.5</td>
+			<td>dz</td>
+		</tr>
+		<tr data-player-id="37064599">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>Goudmijn, Kenzo</span></td>
+			<td>18</td>
+			<td>DM, AM C</td>
+			<td>AZ</td>
+			<td>0.8</td>
+			<td>0.1</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="43296764">
+			<td>CM</td>
+			<td>80</td>
+			<td><span>Nicolussi Caviglia, Hans</span></td>
+			<td>20</td>
+			<td>AM RC</td>
+			<td>Zebre</td>
+			<td>7.9</td>
+			<td>0.4</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="13222363">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>Essahel, Amine</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>Academie Mohammed VI</td>
+			<td>0</td>
+			<td>0.06</td>
+			<td>ma</td>
+		</tr>
+		<tr data-player-id="91207274" class="pab">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>Onana, Amadou</span></td>
+			<td>18</td>
+			<td>DM</td>
+			<td>Hamburger SV</td>
+			<td>3.5</td>
+			<td>0.06</td>
+			<td>be</td>
+		</tr>
+		<tr data-player-id="96129140" class="pab">
+			<td>CM</td>
+			<td class="fpa">81</td>
+			<td><span>Bogusz, Mateusz</span></td>
+			<td>18</td>
+			<td>AM C</td>
+			<td>Logrones</td>
+			<td>10</td>
+			<td>2.1</td>
+			<td>pl</td>
+		</tr>
+		<tr data-player-id="28108036">
+			<td>CM</td>
+			<td>80</td>
+			<td><span>Gallagher, Conor</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Chelsea</td>
+			<td>15</td>
+			<td>7</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="29217877">
+			<td>CM</td>
+			<td>81</td>
+			<td><span>Jenkins, Jack</span></td>
+			<td>18</td>
+			<td>DM</td>
+			<td>Leeds</td>
+			<td>0.8</td>
+			<td>0.37</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="59130638" class="paf">
+			<td>CM</td>
+			<td>75</td>
+			<td><span>Kvaratskhelia, Khvicha</span></td>
+			<td>20</td>
+			<td>D R, DM</td>
+			<td>Dinamo Tb.</td>
+			<td>1.4</td>
+			<td>0.33</td>
+			<td>ge</td>
+		</tr>
+		<tr data-player-id="28108490" class="pag">
+			<td>LW</td>
+			<td class="fpa">91</td>
+			<td><span>Sancho, Jadon</span></td>
+			<td>20</td>
+			<td>AM RL</td>
+			<td>Borussia Dortmund</td>
+			<td>105</td>
+			<td>33.1</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="28115788" class="pah">
+			<td>LW</td>
+			<td>89</td>
+			<td><span>Jones, Curtis</span></td>
+			<td>19</td>
+			<td>AM RLC</td>
+			<td>Liverpool</td>
+			<td>20</td>
+			<td>7.3</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="71101331">
+			<td>LW</td>
+			<td>79</td>
+			<td><span>Mudryk, Mykhaylo</span></td>
+			<td>19</td>
+			<td>AM RLC</td>
+			<td>Shakhtar</td>
+			<td>1.8</td>
+			<td>0.3</td>
+			<td>ua</td>
+		</tr>
+		<tr data-player-id="28120040">
+			<td>LW</td>
+			<td>75</td>
+			<td><span>Braaf, Jayden</span></td>
+			<td>17</td>
+			<td>AM RL</td>
+			<td>Man City</td>
+			<td>7.5</td>
+			<td>5</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="2000015300" class="pab">
+			<td>LW</td>
+			<td>81</td>
+			<td><span>Bynoe-Gittens, Jamie</span></td>
+			<td>15</td>
+			<td>AM RL</td>
+			<td>Borussia Dortmund</td>
+			<td>0.06</td>
+			<td>0.01</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="2000017587" class="pab">
+			<td>LW</td>
+			<td>86</td>
+			<td><span>Shoretire, Shola</span></td>
+			<td>16</td>
+			<td>AM RLC</td>
+			<td>Man Utd</td>
+			<td>0.1</td>
+			<td>0.09</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="51063318" class="pah">
+			<td>LW</td>
+			<td>84</td>
+			<td><span>Laínez, Diego</span></td>
+			<td>20</td>
+			<td>AM RL</td>
+			<td>Real Hispalis</td>
+			<td>7.3</td>
+			<td>0.9</td>
+			<td>mx</td>
+		</tr>
+		<tr data-player-id="28127357">
+			<td>LW</td>
+			<td>76</td>
+			<td><span>Diallo, Amadou</span></td>
+			<td>17</td>
+			<td>AM RLC, F C</td>
+			<td>West Ham</td>
+			<td>0.1</td>
+			<td>0.04</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="14239273">
+			<td>LW</td>
+			<td>83</td>
+			<td><span>Zeballos, Exequiel</span></td>
+			<td>18</td>
+			<td>AM RL, ST</td>
+			<td>Boca</td>
+			<td>1.3</td>
+			<td>0.4</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="19362860" class="pab">
+			<td>LW</td>
+			<td>83</td>
+			<td><span>Talles Magno</span></td>
+			<td>18</td>
+			<td>AM RLC, F C</td>
+			<td>VDG</td>
+			<td>6.3</td>
+			<td>2.4</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="29165656" class="pab">
+			<td>LW</td>
+			<td>79</td>
+			<td><span>Sessegnon, Ryan</span></td>
+			<td>20</td>
+			<td>D/WB/AM L</td>
+			<td>Tottenham</td>
+			<td>55</td>
+			<td>19.3</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="19302476" class="pab">
+			<td>LW</td>
+			<td>83</td>
+			<td><span>Paulinho</span></td>
+			<td>20</td>
+			<td>AM RLC</td>
+			<td>Bayer 04</td>
+			<td>26.3</td>
+			<td>1.3</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="43390594">
+			<td>LW</td>
+			<td>81</td>
+			<td><span>Cuéllar, Jaume</span></td>
+			<td>18</td>
+			<td>AM LC, F C</td>
+			<td>SPAL</td>
+			<td>0.2</td>
+			<td>0.2</td>
+			<td>bo</td>
+		</tr>
+		<tr data-player-id="19351309" class="pah">
+			<td>LW</td>
+			<td class="fpa">85</td>
+			<td><span>Martinelli, Gabriel</span></td>
+			<td>19</td>
+			<td>AM RLC, F C</td>
+			<td>Arsenal</td>
+			<td>35</td>
+			<td>19.3</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="98040226">
+			<td>LW</td>
+			<td>79</td>
+			<td><span>Okafor, Noah</span></td>
+			<td>20</td>
+			<td>AM RL</td>
+			<td>FC RB Salzburg</td>
+			<td>4.9</td>
+			<td>2.3</td>
+			<td>ch</td>
+		</tr>
+		<tr data-player-id="83261140" class="pab">
+			<td>LW</td>
+			<td>84</td>
+			<td><span>Conceição, Francisco</span></td>
+			<td>17</td>
+			<td>AM RL</td>
+			<td>FCP</td>
+			<td>1.6</td>
+			<td>0.03</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="37060953">
+			<td>LW</td>
+			<td>78</td>
+			<td><span>Azarkan, Marouan</span></td>
+			<td>18</td>
+			<td>AM RL</td>
+			<td>Feyenoord</td>
+			<td>1.2</td>
+			<td>0.3</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="43397359">
+			<td>LW</td>
+			<td>78</td>
+			<td><span>Cangiano, Gianmarco</span></td>
+			<td>18</td>
+			<td>AM RL</td>
+			<td>Bologna</td>
+			<td>0.2</td>
+			<td>0.2</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="24056361">
+			<td>LW</td>
+			<td>79</td>
+			<td><span>Marin, Antonio</span></td>
+			<td>19</td>
+			<td>AM L</td>
+			<td>Dinamo</td>
+			<td>4.3</td>
+			<td>0.4</td>
+			<td>hr</td>
+		</tr>
+		<tr data-player-id="28121568">
+			<td>LW</td>
+			<td>75</td>
+			<td><span>Elanga, Anthony</span></td>
+			<td>18</td>
+			<td>AM RL</td>
+			<td>Man Utd</td>
+			<td>1</td>
+			<td>0.2</td>
+			<td>se</td>
+		</tr>
+		<tr data-player-id="53136627" class="pah">
+			<td>LW</td>
+			<td class="fpa">86</td>
+			<td><span>Hauge, Jens Petter</span></td>
+			<td>20</td>
+			<td>AM RL</td>
+			<td>Milan</td>
+			<td>26.7</td>
+			<td>4.4</td>
+			<td>no</td>
+		</tr>
+		<tr data-player-id="18106083" class="pah">
+			<td>LW</td>
+			<td>83</td>
+			<td><span>Doku, Jérémy</span></td>
+			<td>18</td>
+			<td>AM RL, ST</td>
+			<td>Rennes</td>
+			<td>13.7</td>
+			<td>1</td>
+			<td>be</td>
+		</tr>
+		<tr data-player-id="2000014562">
+			<td>LW</td>
+			<td>77</td>
+			<td><span>Daal, Ro-Zangelo</span></td>
+			<td>16</td>
+			<td>AM RLC, F C</td>
+			<td>AZ</td>
+			<td>0.09</td>
+			<td>0.07</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="48042432">
+			<td>LW</td>
+			<td>78</td>
+			<td><span>Weah, Timothy</span></td>
+			<td>20</td>
+			<td>AM RLC, F C</td>
+			<td>LOSC</td>
+			<td>14.7</td>
+			<td>2.6</td>
+			<td>us</td>
+		</tr>
+		<tr data-player-id="67278144">
+			<td>LW</td>
+			<td>79</td>
+			<td><span>Valera, Germán</span></td>
+			<td>18</td>
+			<td>AM L, ST</td>
+			<td>A. Madrid</td>
+			<td>0.4</td>
+			<td>0.01</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="37060600">
+			<td>LW</td>
+			<td>82</td>
+			<td><span>Kadioglu, Ferdi</span></td>
+			<td>20</td>
+			<td>AM RLC</td>
+			<td>Fenerbahçe</td>
+			<td>10.3</td>
+			<td>3.5</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="43474378" class="paf">
+			<td>LW</td>
+			<td>79</td>
+			<td><span>Colley, Ebrima</span></td>
+			<td>20</td>
+			<td>AM LC, F C</td>
+			<td>Atalanta</td>
+			<td>8.6</td>
+			<td>0.7</td>
+			<td>gm</td>
+		</tr>
+		<tr data-player-id="43297400" class="paf">
+			<td>LW</td>
+			<td>81</td>
+			<td><span>D'Amico, Felice</span></td>
+			<td>19</td>
+			<td>AM LC, F C</td>
+			<td>Sampdoria</td>
+			<td>3.3</td>
+			<td>0.1</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="2000014559" class="pab">
+			<td>LW</td>
+			<td>83</td>
+			<td><span>Poku, Ernest</span></td>
+			<td>16</td>
+			<td>AM RL, ST</td>
+			<td>AZ</td>
+			<td>0.09</td>
+			<td>0.06</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="84151685">
+			<td>LW</td>
+			<td>79</td>
+			<td><span>Mambimbi, Felix</span></td>
+			<td>19</td>
+			<td>AM RLC</td>
+			<td>Young Boys</td>
+			<td>3.6</td>
+			<td>0.6</td>
+			<td>ch</td>
+		</tr>
+		<tr data-player-id="67260353" class="paf">
+			<td>LW</td>
+			<td>78</td>
+			<td><span>Vallejo, Hugo</span></td>
+			<td>20</td>
+			<td>AM RL, ST</td>
+			<td>R. Madrid</td>
+			<td>1.6</td>
+			<td>0.06</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="59130638" class="pab">
+			<td>LW</td>
+			<td>82</td>
+			<td><span>Kvaratskhelia, Khvicha</span></td>
+			<td>19</td>
+			<td>AM RL</td>
+			<td>Rubin</td>
+			<td>1.1</td>
+			<td>0.5</td>
+			<td>ge</td>
+		</tr>
+		<tr data-player-id="28122192">
+			<td>LW</td>
+			<td>74</td>
+			<td><span>Jasper, Sylvester</span></td>
+			<td>18</td>
+			<td>AM RL</td>
+			<td>Fulham</td>
+			<td>2.5</td>
+			<td>0.2</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="14219443">
+			<td>LW</td>
+			<td>78</td>
+			<td><span>Urzi, Agustín</span></td>
+			<td>20</td>
+			<td>AM RL</td>
+			<td>Banfield</td>
+			<td>3.2</td>
+			<td>1.8</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="27128917" class="pab">
+			<td>LW</td>
+			<td>83</td>
+			<td><span>Damsgaard, Mikkel</span></td>
+			<td>20</td>
+			<td>AM RLC, F C</td>
+			<td>Sampdoria</td>
+			<td>3.2</td>
+			<td>1.7</td>
+			<td>dk</td>
+		</tr>
+		<tr data-player-id="28122642" class="pah">
+			<td>LW</td>
+			<td class="fpa">83</td>
+			<td><span>Saka, Bukayo</span></td>
+			<td>18</td>
+			<td>WB L, AM RL</td>
+			<td>Arsenal</td>
+			<td>30</td>
+			<td>25.9</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="48044735" class="pab">
+			<td>LW</td>
+			<td>84</td>
+			<td><span>Gouiri, Amine</span></td>
+			<td>20</td>
+			<td>AM L, ST</td>
+			<td>OGC Nice</td>
+			<td>10.5</td>
+			<td>2.6</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="49038940">
+			<td>LW</td>
+			<td>80</td>
+			<td><span>Da Cunha, Lucas</span></td>
+			<td>19</td>
+			<td>AM RL</td>
+			<td>OGC Nice</td>
+			<td>1.7</td>
+			<td>0.1</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="31041522">
+			<td>LW</td>
+			<td>76</td>
+			<td><span>Hlozek, Adam</span></td>
+			<td>18</td>
+			<td>AM RL, ST</td>
+			<td>Sparta Prague</td>
+			<td>2.7</td>
+			<td>0.3</td>
+			<td>cz</td>
+		</tr>
+		<tr data-player-id="14207710">
+			<td>LW</td>
+			<td>81</td>
+			<td><span>Pellegrini, Matías</span></td>
+			<td>20</td>
+			<td>AM L</td>
+			<td>Inter Miami</td>
+			<td>11.6</td>
+			<td>2</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="67260440" class="pab">
+			<td>LW</td>
+			<td>83</td>
+			<td><span>Bryan Gil</span></td>
+			<td>19</td>
+			<td>AM RLC</td>
+			<td>Sevilla</td>
+			<td>4.1</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67276121" class="pab">
+			<td>LW</td>
+			<td>81</td>
+			<td><span>De la Fuente, Konrad</span></td>
+			<td>19</td>
+			<td>AM RL</td>
+			<td>Barcelona</td>
+			<td>2.2</td>
+			<td>0.2</td>
+			<td>us</td>
+		</tr>
+		<tr data-player-id="37078348">
+			<td>LW</td>
+			<td>83</td>
+			<td><span>Antonisse, Jeremy</span></td>
+			<td>18</td>
+			<td>AM L, ST</td>
+			<td>PSV</td>
+			<td>0.5</td>
+			<td>0.09</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="2000017261">
+			<td>LW</td>
+			<td>80</td>
+			<td><span>Servais, Mathis</span></td>
+			<td>15</td>
+			<td>AM RL</td>
+			<td>Club Brugge</td>
+			<td>0.05</td>
+			<td>0.01</td>
+			<td>be</td>
+		</tr>
+		<tr data-player-id="29244869">
+			<td>LW</td>
+			<td>79</td>
+			<td><span>Sulemana, Kamaldeen</span></td>
+			<td>18</td>
+			<td>AM L</td>
+			<td>FC Nordsjælland</td>
+			<td>1.1</td>
+			<td>0.1</td>
+			<td>gh</td>
+		</tr>
+		<tr data-player-id="67276122" class="pag">
+			<td>LW</td>
+			<td>89</td>
+			<td><span>Fati, Ansu</span></td>
+			<td>17</td>
+			<td>AM RL, ST</td>
+			<td>Barcelona</td>
+			<td>10.6</td>
+			<td>21.2</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="53166991">
+			<td>LW</td>
+			<td>77</td>
+			<td><span>Ceide, Emil</span></td>
+			<td>18</td>
+			<td>AM RL</td>
+			<td>Rosenborg</td>
+			<td>1.6</td>
+			<td>0.6</td>
+			<td>no</td>
+		</tr>
+		<tr data-player-id="62235341" class="pab">
+			<td>LW</td>
+			<td>83</td>
+			<td><span>Stevanovic, Filip</span></td>
+			<td>17</td>
+			<td>AM RLC</td>
+			<td>Man City</td>
+			<td>10</td>
+			<td>2.2</td>
+			<td>rs</td>
+		</tr>
+		<tr data-player-id="19403484">
+			<td>LW</td>
+			<td>79</td>
+			<td><span>Luís Henrique</span></td>
+			<td>18</td>
+			<td>AM RL, ST</td>
+			<td>OM</td>
+			<td>14</td>
+			<td>0.7</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="43390484">
+			<td>LW</td>
+			<td>80</td>
+			<td><span>Juwara, Musa</span></td>
+			<td>18</td>
+			<td>AM RL, ST</td>
+			<td>Bologna</td>
+			<td>8.1</td>
+			<td>0.1</td>
+			<td>gm</td>
+		</tr>
+		<tr data-player-id="19354619">
+			<td>LW</td>
+			<td>80</td>
+			<td><span>Marcos Paulo</span></td>
+			<td>19</td>
+			<td>AM LC</td>
+			<td>FLU</td>
+			<td>2.7</td>
+			<td>1.2</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="14217264" class="pab">
+			<td>LW</td>
+			<td>83</td>
+			<td><span>De La Vega, Pedro</span></td>
+			<td>19</td>
+			<td>AM RL, ST</td>
+			<td>Lanús</td>
+			<td>2.9</td>
+			<td>1.1</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="28110488" class="pah">
+			<td>LW</td>
+			<td class="fpa">86</td>
+			<td><span>McNeil, Dwight</span></td>
+			<td>20</td>
+			<td>AM RL, ST</td>
+			<td>Burnley</td>
+			<td>45</td>
+			<td>19.3</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="19307356" class="paf">
+			<td>LW</td>
+			<td>78</td>
+			<td><span>Rhuan</span></td>
+			<td>20</td>
+			<td>AM LC, F C</td>
+			<td>BOT</td>
+			<td>0.8</td>
+			<td>0.09</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="83261934">
+			<td>LW</td>
+			<td>79</td>
+			<td><span>Fernandes, Joelson</span></td>
+			<td>17</td>
+			<td>AM RL</td>
+			<td>Sporting</td>
+			<td>5.2</td>
+			<td>0.2</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="19360962">
+			<td>LW</td>
+			<td>80</td>
+			<td><span>Gabriel Veron</span></td>
+			<td>17</td>
+			<td>AM RL, ST</td>
+			<td>SEP</td>
+			<td>1</td>
+			<td>0.1</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="67295206" class="pah">
+			<td>LW</td>
+			<td>85</td>
+			<td><span>Serrano, Nico</span></td>
+			<td>17</td>
+			<td>AM RL, ST</td>
+			<td>A. Bilbao</td>
+			<td>1.4</td>
+			<td>0.06</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="28113414" class="paf">
+			<td>LW</td>
+			<td>78</td>
+			<td><span>Lewis-Potter, Keane</span></td>
+			<td>19</td>
+			<td>AM RLC, F C</td>
+			<td>Hull</td>
+			<td>0.8</td>
+			<td>0.5</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="2000052060" class="pab">
+			<td>LW</td>
+			<td>84</td>
+			<td><span>Aranda, Óscar</span></td>
+			<td>18</td>
+			<td>AM L, ST</td>
+			<td>R. Madrid</td>
+			<td>0.5</td>
+			<td>0.01</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="19302146" class="pag">
+			<td>LW</td>
+			<td>86</td>
+			<td><span>Vinícius Júnior</span></td>
+			<td>20</td>
+			<td>AM L, ST</td>
+			<td>R. Madrid</td>
+			<td>197</td>
+			<td>17.7</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="49056279" class="pah">
+			<td>LW</td>
+			<td>86</td>
+			<td><span>Cherki, Rayan</span></td>
+			<td>16</td>
+			<td>AM RLC, F C</td>
+			<td>OL</td>
+			<td>8.7</td>
+			<td>0.2</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="37065565">
+			<td>LW</td>
+			<td>79</td>
+			<td><span>van der Heide, Arjen</span></td>
+			<td>18</td>
+			<td>AM RL</td>
+			<td>sc Heerenveen</td>
+			<td>0.7</td>
+			<td>0.1</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="67276482">
+			<td>LW</td>
+			<td>79</td>
+			<td><span>Barrenetxea, Ander</span></td>
+			<td>18</td>
+			<td>AM RL</td>
+			<td>Real San Sebastián</td>
+			<td>12.5</td>
+			<td>3.9</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67277465">
+			<td>LW</td>
+			<td>81</td>
+			<td><span>Arribas, Sergio</span></td>
+			<td>18</td>
+			<td>AM LC</td>
+			<td>R. Madrid</td>
+			<td>1.6</td>
+			<td>0.06</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="28112986" class="pah">
+			<td>LW</td>
+			<td>86</td>
+			<td><span>Hudson-Odoi, Callum</span></td>
+			<td>19</td>
+			<td>AM RLC</td>
+			<td>Chelsea</td>
+			<td>120</td>
+			<td>25.9</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="83195702">
+			<td>LW</td>
+			<td>78</td>
+			<td><span>Araújo, Tiago</span></td>
+			<td>19</td>
+			<td>D/WB L, AM RL</td>
+			<td>SLB</td>
+			<td>2.5</td>
+			<td>0.2</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="57176058">
+			<td>LW</td>
+			<td>80</td>
+			<td><span>Baiaram, Stefan</span></td>
+			<td>17</td>
+			<td>AM RL</td>
+			<td>U Craiova</td>
+			<td>1</td>
+			<td>0.08</td>
+			<td>ro</td>
+		</tr>
+		<tr data-player-id="2000034525">
+			<td>LW</td>
+			<td>72</td>
+			<td><span>Iling, Samuel</span></td>
+			<td>16</td>
+			<td>D/WB L, AM RL</td>
+			<td>Zebre</td>
+			<td>0.2</td>
+			<td>0.03</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="91184349" class="paf">
+			<td>LW</td>
+			<td>74</td>
+			<td><span>Jakobs, Ismail</span></td>
+			<td>20</td>
+			<td>WB L/AM L</td>
+			<td>1. FC Koln</td>
+			<td>13.2</td>
+			<td>2.7</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="14217167" class="pab">
+			<td>LW</td>
+			<td>84</td>
+			<td><span>Velasco, Alan</span></td>
+			<td>18</td>
+			<td>AM RLC, F C</td>
+			<td>Independiente</td>
+			<td>2.4</td>
+			<td>0.7</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="43296186" class="pab">
+			<td>RW</td>
+			<td>85</td>
+			<td><span>Vignato, Emanuel</span></td>
+			<td>19</td>
+			<td>AM RC</td>
+			<td>Bologna</td>
+			<td>9.7</td>
+			<td>0.7</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="29179717" class="pab">
+			<td>RW</td>
+			<td>84</td>
+			<td><span>Neto, Pedro</span></td>
+			<td>20</td>
+			<td>AM RL, ST</td>
+			<td>Wolves</td>
+			<td>40</td>
+			<td>10.3</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="83137935" class="pah">
+			<td>RW</td>
+			<td>87</td>
+			<td><span>Trincão, Francisco</span></td>
+			<td>20</td>
+			<td>AM RL</td>
+			<td>Barcelona</td>
+			<td>20.2</td>
+			<td>6.5</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="14183207">
+			<td>RW</td>
+			<td>79</td>
+			<td><span>Álvarez, Julián</span></td>
+			<td>20</td>
+			<td>AM RLC, F C</td>
+			<td>River</td>
+			<td>3.7</td>
+			<td>1.3</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="72056311">
+			<td>RW</td>
+			<td>82</td>
+			<td><span>Marshall-Rutty, Jahkeele</span></td>
+			<td>16</td>
+			<td>AM RL</td>
+			<td>Toronto FC</td>
+			<td>0.9</td>
+			<td>0.1</td>
+			<td>ca</td>
+		</tr>
+		<tr data-player-id="2000011972" class="pab">
+			<td>RW</td>
+			<td>85</td>
+			<td><span>Sávio</span></td>
+			<td>16</td>
+			<td>AM RL, ST</td>
+			<td>ATM</td>
+			<td>0.7</td>
+			<td>0.06</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="78095389" class="pab">
+			<td>RW</td>
+			<td>83</td>
+			<td><span>Pellistri, Facundo</span></td>
+			<td>18</td>
+			<td>AM R, ST</td>
+			<td>Man Utd</td>
+			<td>25</td>
+			<td>5</td>
+			<td>uy</td>
+		</tr>
+		<tr data-player-id="2000009465">
+			<td>RW</td>
+			<td>77</td>
+			<td><span>Rodríguez, Benjamín</span></td>
+			<td>17</td>
+			<td>AM RL, ST</td>
+			<td>Defensor Sporting</td>
+			<td>0.09</td>
+			<td>0.03</td>
+			<td>uy</td>
+		</tr>
+		<tr data-player-id="49048366">
+			<td>RW</td>
+			<td>79</td>
+			<td><span>Lihadji, Isaac</span></td>
+			<td>18</td>
+			<td>AM RC</td>
+			<td>LOSC</td>
+			<td>1.1</td>
+			<td>0.1</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="86066846">
+			<td>RW</td>
+			<td>80</td>
+			<td><span>Plata, Gonzalo</span></td>
+			<td>19</td>
+			<td>AM RLC</td>
+			<td>Sporting</td>
+			<td>7.7</td>
+			<td>1</td>
+			<td>ec</td>
+		</tr>
+		<tr data-player-id="19348859" class="pab">
+			<td>RW</td>
+			<td>81</td>
+			<td><span>Tete</span></td>
+			<td>20</td>
+			<td>AM R</td>
+			<td>Shakhtar</td>
+			<td>6.9</td>
+			<td>2.4</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="84153276">
+			<td>RW</td>
+			<td>77</td>
+			<td><span>Ndoye, Dan</span></td>
+			<td>19</td>
+			<td>AM RL, ST</td>
+			<td>OGC Nice</td>
+			<td>4.2</td>
+			<td>0.5</td>
+			<td>ch</td>
+		</tr>
+		<tr data-player-id="19397590" class="pab">
+			<td>RW</td>
+			<td>80</td>
+			<td><span>Renyer</span></td>
+			<td>17</td>
+			<td>AM R</td>
+			<td>SAN</td>
+			<td>0.04</td>
+			<td>0.05</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="78088243">
+			<td>RW</td>
+			<td>78</td>
+			<td><span>Rodríguez, Alan</span></td>
+			<td>20</td>
+			<td>AM R</td>
+			<td>Defensor Sporting</td>
+			<td>0.2</td>
+			<td>0.2</td>
+			<td>uy</td>
+		</tr>
+		<tr data-player-id="89056845" class="pah">
+			<td>RW</td>
+			<td class="fpa">85</td>
+			<td><span>Torres, Ferran</span></td>
+			<td>20</td>
+			<td>AM RL</td>
+			<td>Man City</td>
+			<td>60</td>
+			<td>30.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67258949">
+			<td>RW</td>
+			<td>81</td>
+			<td><span>Róber</span></td>
+			<td>19</td>
+			<td>AM RL</td>
+			<td>Real Hispalis</td>
+			<td>3.2</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="27128912">
+			<td>RW</td>
+			<td>81</td>
+			<td><span>Skov Olsen, Andreas</span></td>
+			<td>20</td>
+			<td>AM R</td>
+			<td>Bologna</td>
+			<td>26</td>
+			<td>1.6</td>
+			<td>dk</td>
+		</tr>
+		<tr data-player-id="2000056415" class="pab">
+			<td>RW</td>
+			<td>83</td>
+			<td><span>Akhomach, Ilias</span></td>
+			<td>16</td>
+			<td>AM RLC, F C</td>
+			<td>Barcelona</td>
+			<td>0.7</td>
+			<td>0.06</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="43425040" class="pab">
+			<td>RW</td>
+			<td>84</td>
+			<td><span>Diallo, Amad</span></td>
+			<td>18</td>
+			<td>AM RL, ST</td>
+			<td>Atalanta</td>
+			<td>4.6</td>
+			<td>0.2</td>
+			<td>ci</td>
+		</tr>
+		<tr data-player-id="49056370">
+			<td>RW</td>
+			<td>80</td>
+			<td><span>Tramoni, Lisandru</span></td>
+			<td>17</td>
+			<td>AM RL</td>
+			<td>Cagliari</td>
+			<td>0.7</td>
+			<td>0.05</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="78097898">
+			<td>RW</td>
+			<td>82</td>
+			<td><span>Olivera, Cristian</span></td>
+			<td>18</td>
+			<td>AM R, ST</td>
+			<td>Almería</td>
+			<td>2.7</td>
+			<td>0.2</td>
+			<td>uy</td>
+		</tr>
+		<tr data-player-id="37058361">
+			<td>RW</td>
+			<td>77</td>
+			<td><span>Chong, Tahith</span></td>
+			<td>20</td>
+			<td>AM RL, ST</td>
+			<td>Man Utd</td>
+			<td>48</td>
+			<td>7.9</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="29186418">
+			<td>RW</td>
+			<td>78</td>
+			<td><span>Clarke, Jack</span></td>
+			<td>19</td>
+			<td>AM RL</td>
+			<td>Tottenham</td>
+			<td>25</td>
+			<td>2.2</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="43425594" class="pab">
+			<td>RW</td>
+			<td>82</td>
+			<td><span>Oddei, Brian</span></td>
+			<td>17</td>
+			<td>AM R, ST</td>
+			<td>Sassuolo</td>
+			<td>0.2</td>
+			<td>0.1</td>
+			<td>gh</td>
+		</tr>
+		<tr data-player-id="19390876" class="paf">
+			<td>RW</td>
+			<td>75</td>
+			<td><span>Canela</span></td>
+			<td>20</td>
+			<td>AM RL</td>
+			<td>Nova Iguaçu</td>
+			<td>0.7</td>
+			<td>0.02</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="37076092">
+			<td>RW</td>
+			<td>78</td>
+			<td><span>Madueke, Noni</span></td>
+			<td>18</td>
+			<td>AM RLC</td>
+			<td>PSV</td>
+			<td>1.2</td>
+			<td>0.3</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="2000047625">
+			<td>RW</td>
+			<td>78</td>
+			<td><span>Gomes, Luís</span></td>
+			<td>16</td>
+			<td>AM RL</td>
+			<td>Sporting</td>
+			<td>0.06</td>
+			<td>0.001</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="91177334">
+			<td>RW</td>
+			<td>79</td>
+			<td><span>Hartmann, Fabrice</span></td>
+			<td>19</td>
+			<td>AM RL, ST</td>
+			<td>RB Leipzig</td>
+			<td>1.3</td>
+			<td>0.05</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="24058125">
+			<td>RW</td>
+			<td>81</td>
+			<td><span>Hasic, Ajdin</span></td>
+			<td>18</td>
+			<td>AM RC</td>
+			<td>Besiktas</td>
+			<td>7.3</td>
+			<td>0.2</td>
+			<td>ba</td>
+		</tr>
+		<tr data-player-id="78088254">
+			<td>RW</td>
+			<td>78</td>
+			<td><span>Rodríguez, Brian</span></td>
+			<td>20</td>
+			<td>AM RLC</td>
+			<td>LAFC</td>
+			<td>15.5</td>
+			<td>3.6</td>
+			<td>uy</td>
+		</tr>
+		<tr data-player-id="48042658" class="paf">
+			<td>RW</td>
+			<td>80</td>
+			<td><span>Mbeumo, Bryan</span></td>
+			<td>20</td>
+			<td>AM RL, ST</td>
+			<td>Brentford</td>
+			<td>20</td>
+			<td>5.7</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="19306929" class="pag">
+			<td>RW</td>
+			<td>89</td>
+			<td><span>Rodrygo</span></td>
+			<td>19</td>
+			<td>AM RL, ST</td>
+			<td>R. Madrid</td>
+			<td>112</td>
+			<td>6</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="71104584">
+			<td>RW</td>
+			<td>80</td>
+			<td><span>Tsitaishvili, Georgiy</span></td>
+			<td>19</td>
+			<td>AM RLC</td>
+			<td>Dynamo Kyiv</td>
+			<td>2.6</td>
+			<td>0.4</td>
+			<td>ua</td>
+		</tr>
+		<tr data-player-id="14224722" class="paf">
+			<td>RW</td>
+			<td>79</td>
+			<td><span>Bajamich, Mateo</span></td>
+			<td>20</td>
+			<td>AM R, ST</td>
+			<td>Houston</td>
+			<td>6.2</td>
+			<td>1.3</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="29233143" class="pab">
+			<td>RW</td>
+			<td>85</td>
+			<td><span>Elliott, Harvey</span></td>
+			<td>17</td>
+			<td>AM RL, ST</td>
+			<td>Liverpool</td>
+			<td>12</td>
+			<td>5</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="67295650" class="pab">
+			<td>RW</td>
+			<td>84</td>
+			<td><span>Pino, Yéremi</span></td>
+			<td>17</td>
+			<td>AM RLC, F C</td>
+			<td>Villarreal</td>
+			<td>3.2</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="43424586">
+			<td>RW</td>
+			<td>76</td>
+			<td><span>Bamba, Mory</span></td>
+			<td>18</td>
+			<td>AM RL</td>
+			<td>Roma</td>
+			<td>0.2</td>
+			<td>0.02</td>
+			<td>ci</td>
+		</tr>
+		<tr data-player-id="2000053145">
+			<td>RW</td>
+			<td>78</td>
+			<td><span>Llario, Carles</span></td>
+			<td>18</td>
+			<td>AM R, ST</td>
+			<td>R. Madrid</td>
+			<td>0.3</td>
+			<td>0.009</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="43612084" class="pab">
+			<td>RW</td>
+			<td>83</td>
+			<td><span>Moro, Raúl</span></td>
+			<td>17</td>
+			<td>AM RC, F C</td>
+			<td>Lazio</td>
+			<td>0.2</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="28111474" class="pab">
+			<td>RW</td>
+			<td>79</td>
+			<td><span>Matondo, Rabbi</span></td>
+			<td>19</td>
+			<td>AM RL</td>
+			<td>Schalke 04</td>
+			<td>17.5</td>
+			<td>1.3</td>
+			<td>gb-wls</td>
+		</tr>
+		<tr data-player-id="28107919" class="pah">
+			<td>RW</td>
+			<td class="fpa">84</td>
+			<td><span>Nelson, Reiss</span></td>
+			<td>20</td>
+			<td>AM RL</td>
+			<td>Arsenal</td>
+			<td>40</td>
+			<td>19.3</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="67260216" class="pab">
+			<td>RW</td>
+			<td>82</td>
+			<td><span>Artola, Juan</span></td>
+			<td>20</td>
+			<td>AM RL</td>
+			<td>A. Bilbao</td>
+			<td>3.3</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67297153">
+			<td>RW</td>
+			<td>78</td>
+			<td><span>Gómez, Fran</span></td>
+			<td>18</td>
+			<td>AM RLC</td>
+			<td>Córdoba</td>
+			<td>1.2</td>
+			<td>0.07</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="95078306">
+			<td>RW</td>
+			<td>78</td>
+			<td><span>Fran Pérez</span></td>
+			<td>17</td>
+			<td>AM R</td>
+			<td>Valencia</td>
+			<td>2.4</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67295025">
+			<td>RW</td>
+			<td>81</td>
+			<td><span>González, Hugo</span></td>
+			<td>17</td>
+			<td>AM RL</td>
+			<td>Valencia</td>
+			<td>1.4</td>
+			<td>0.06</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="18107456">
+			<td>RW</td>
+			<td>76</td>
+			<td><span>Persyn, Tibo</span></td>
+			<td>18</td>
+			<td>D/WB/AM R</td>
+			<td>Inter</td>
+			<td>1.3</td>
+			<td>0.06</td>
+			<td>be</td>
+		</tr>
+		<tr data-player-id="83228739">
+			<td>RW</td>
+			<td>79</td>
+			<td><span>Correia, Félix</span></td>
+			<td>19</td>
+			<td>AM RLC</td>
+			<td>Zebre</td>
+			<td>2.8</td>
+			<td>0.1</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="2000034357">
+			<td>RW</td>
+			<td>77</td>
+			<td><span>Blanco, Fabio</span></td>
+			<td>16</td>
+			<td>AM R</td>
+			<td>Valencia</td>
+			<td>1.2</td>
+			<td>0.04</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="61094106">
+			<td>RW</td>
+			<td>77</td>
+			<td><span>Ritchie-Hosler, Kane</span></td>
+			<td>17</td>
+			<td>AM R, ST</td>
+			<td>Rangers</td>
+			<td>0.03</td>
+			<td>0.009</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="37065498">
+			<td>RW</td>
+			<td>77</td>
+			<td><span>Aboukhlal, Zakaria</span></td>
+			<td>20</td>
+			<td>AM RL, ST</td>
+			<td>AZ</td>
+			<td>2.3</td>
+			<td>1.2</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="37066566">
+			<td>RW</td>
+			<td>77</td>
+			<td><span>Musaba, Anthony</span></td>
+			<td>19</td>
+			<td>AM RL</td>
+			<td>AS Monaco</td>
+			<td>4.8</td>
+			<td>0.6</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="83261925">
+			<td>RW</td>
+			<td>80</td>
+			<td><span>Tavares, Bruno</span></td>
+			<td>18</td>
+			<td>AM RL</td>
+			<td>Sporting</td>
+			<td>2.7</td>
+			<td>0.07</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="61093336">
+			<td>RW</td>
+			<td>80</td>
+			<td><span>Dembélé, Karamoko</span></td>
+			<td>17</td>
+			<td>AM R</td>
+			<td>Celtic</td>
+			<td>0.8</td>
+			<td>1</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="28110305">
+			<td>RW</td>
+			<td>79</td>
+			<td><span>Garré, Benjamín</span></td>
+			<td>20</td>
+			<td>AM RL</td>
+			<td>Racing Club</td>
+			<td>2</td>
+			<td>0.7</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="95071289">
+			<td>RW</td>
+			<td>78</td>
+			<td><span>Zito</span></td>
+			<td>18</td>
+			<td>AM RL</td>
+			<td>Cagliari</td>
+			<td>7</td>
+			<td>0.6</td>
+			<td>ao</td>
+		</tr>
+		<tr data-player-id="28126241">
+			<td>RW</td>
+			<td>78</td>
+			<td><span>Bobb, Oscar</span></td>
+			<td>17</td>
+			<td>AM RL</td>
+			<td>Man City</td>
+			<td>0.1</td>
+			<td>0.04</td>
+			<td>no</td>
+		</tr>
+		<tr data-player-id="53145323">
+			<td>RW</td>
+			<td>77</td>
+			<td><span>Evjen, Håkon</span></td>
+			<td>20</td>
+			<td>AM RLC</td>
+			<td>AZ</td>
+			<td>2</td>
+			<td>1.7</td>
+			<td>no</td>
+		</tr>
+		<tr data-player-id="2000022826">
+			<td>RW</td>
+			<td>78</td>
+			<td><span>Oehlers, Aurelio</span></td>
+			<td>16</td>
+			<td>AM RL, ST</td>
+			<td>FC Utrecht</td>
+			<td>0.09</td>
+			<td>0.04</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="67277459" class="paf">
+			<td>RW</td>
+			<td>75</td>
+			<td><span>Marvin</span></td>
+			<td>20</td>
+			<td>AM R</td>
+			<td>R. Madrid</td>
+			<td>1.6</td>
+			<td>0.06</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="2000015210">
+			<td>RW</td>
+			<td>77</td>
+			<td><span>Dacal, Sergio</span></td>
+			<td>16</td>
+			<td>AM R</td>
+			<td>S. Gijón</td>
+			<td>0.4</td>
+			<td>0.03</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="2000031533">
+			<td>RW</td>
+			<td>80</td>
+			<td><span>Efekele, Malamine</span></td>
+			<td>16</td>
+			<td>AM RL</td>
+			<td>AS Monaco</td>
+			<td>0.06</td>
+			<td>0.03</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="19338230" class="pah">
+			<td>RW</td>
+			<td>87</td>
+			<td><span>Antony</span></td>
+			<td>20</td>
+			<td>AM RC, F C</td>
+			<td>Ajax</td>
+			<td>13.7</td>
+			<td>6.8</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="70111999">
+			<td>RW</td>
+			<td>78</td>
+			<td><span>Bayrakdar, Gokdeniz</span></td>
+			<td>18</td>
+			<td>AM RL</td>
+			<td>Antalyaspor</td>
+			<td>1.5</td>
+			<td>1.1</td>
+			<td>tr</td>
+		</tr>
+		<tr data-player-id="83228804">
+			<td>RW</td>
+			<td>79</td>
+			<td><span>Borges, Goncalo</span></td>
+			<td>19</td>
+			<td>AM RL</td>
+			<td>FCP</td>
+			<td>1.6</td>
+			<td>0.13</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="28122195">
+			<td>RW</td>
+			<td>77</td>
+			<td><span>Carvalho, Fábio</span></td>
+			<td>17</td>
+			<td>AM RC, F C</td>
+			<td>Fulham</td>
+			<td>0.6</td>
+			<td>0.23</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="83333463">
+			<td>RW</td>
+			<td>80</td>
+			<td><span>Gomes, Rodrigo</span></td>
+			<td>17</td>
+			<td>AM RL</td>
+			<td>Braga</td>
+			<td>0.06</td>
+			<td>0.03</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="2000046388">
+			<td>RW</td>
+			<td>78</td>
+			<td><span>Gunther, Lasse</span></td>
+			<td>17</td>
+			<td>AM RL, ST</td>
+			<td>FC Bayern</td>
+			<td>0.06</td>
+			<td>0.07</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="2000042706">
+			<td>RW</td>
+			<td>78</td>
+			<td><span>Harib Abdalla</span></td>
+			<td>17</td>
+			<td>AM R</td>
+			<td>Shabab Al-Ahli</td>
+			<td>14.2</td>
+			<td>0.13</td>
+			<td>ae</td>
+		</tr>
+		<tr data-player-id="96121228" class="pab">
+			<td>RW</td>
+			<td>81</td>
+			<td><span>Kaminski, Jakub</span></td>
+			<td>18</td>
+			<td>WB R, AM RL</td>
+			<td>Lech</td>
+			<td>0.4</td>
+			<td>0.09</td>
+			<td>pl</td>
+		</tr>
+		<tr data-player-id="28121463">
+			<td>RW</td>
+			<td>81</td>
+			<td><span>Knight, Ben</span></td>
+			<td>18</td>
+			<td>AM RC</td>
+			<td>Man City</td>
+			<td>5</td>
+			<td>0.1</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="43295814" class="pag">
+			<td>RW</td>
+			<td>89</td>
+			<td><span>Kulusevski, Dejan</span></td>
+			<td>20</td>
+			<td>AM RC</td>
+			<td>Zebre</td>
+			<td>81.2</td>
+			<td>23.5</td>
+			<td>se</td>
+		</tr>
+		<tr data-player-id="2000065710">
+			<td>RW</td>
+			<td>78</td>
+			<td><span>Sane, Sidi</span></td>
+			<td>17</td>
+			<td>AM RL</td>
+			<td>Schalke 04</td>
+			<td>0.06</td>
+			<td>0.1</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="2000065716">
+			<td>RW</td>
+			<td>78</td>
+			<td><span>Sanyang, Mamin</span></td>
+			<td>17</td>
+			<td>D/WB/AM R</td>
+			<td>FC Bayern</td>
+			<td>0.06</td>
+			<td>0.12</td>
+			<td>gm</td>
+		</tr>
+		<tr data-player-id="67272882" class="pab">
+			<td>AM</td>
+			<td>83</td>
+			<td><span>Roberto López</span></td>
+			<td>20</td>
+			<td>AM LC</td>
+			<td>Real San Sebastián</td>
+			<td>8.3</td>
+			<td>1.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="83174788" class="paf">
+			<td>AM</td>
+			<td>79</td>
+			<td><span>Sousa, Afonso</span></td>
+			<td>20</td>
+			<td>AM LC</td>
+			<td>Belenenses SAD</td>
+			<td>1.2</td>
+			<td>0.2</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="37065532">
+			<td>AM</td>
+			<td>80</td>
+			<td><span>Taabouni, Mohamed</span></td>
+			<td>18</td>
+			<td>AM LC</td>
+			<td>AZ</td>
+			<td>0.8</td>
+			<td>0.1</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="16283659" class="pah">
+			<td>AM</td>
+			<td>85</td>
+			<td><span>Demir, Yusuf</span></td>
+			<td>17</td>
+			<td>AM RC, F C</td>
+			<td>SK Rapid Vienna</td>
+			<td>0.6</td>
+			<td>0.3</td>
+			<td>at</td>
+		</tr>
+		<tr data-player-id="2000047221">
+			<td>AM</td>
+			<td>80</td>
+			<td><span>Hutchinson, Omari</span></td>
+			<td>16</td>
+			<td>AM RLC</td>
+			<td>Arsenal</td>
+			<td>0.1</td>
+			<td>0.005</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="2000052096">
+			<td>AM</td>
+			<td>81</td>
+			<td><span>Bruno</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>R. Madrid</td>
+			<td>0.5</td>
+			<td>0.01</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="24065107">
+			<td>AM</td>
+			<td>80</td>
+			<td><span>Saranic, Ivan</span></td>
+			<td>17</td>
+			<td>AM RC</td>
+			<td>Dinamo</td>
+			<td>0.1</td>
+			<td>0.01</td>
+			<td>hr</td>
+		</tr>
+		<tr data-player-id="49056278">
+			<td>AM</td>
+			<td>81</td>
+			<td><span>Da Silva, Florent</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>OL</td>
+			<td>0.5</td>
+			<td>0.05</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="77056310">
+			<td>AM</td>
+			<td>80</td>
+			<td><span>Celi, Yuriel</span></td>
+			<td>18</td>
+			<td>AM LC</td>
+			<td>Cantolao</td>
+			<td>0.9</td>
+			<td>0.05</td>
+			<td>pe</td>
+		</tr>
+		<tr data-player-id="2000034583">
+			<td>AM</td>
+			<td>81</td>
+			<td><span>Salas, Alejandro</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>Valencia</td>
+			<td>1.4</td>
+			<td>0.05</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="37073834" class="pab">
+			<td>AM</td>
+			<td>81</td>
+			<td><span>Ihattaren, Mohamed</span></td>
+			<td>18</td>
+			<td>AM RLC</td>
+			<td>PSV</td>
+			<td>4</td>
+			<td>3.5</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="28108494" class="pag">
+			<td>AM</td>
+		<td class="fpa">90</td>
+			<td><span>Foden, Phil</span></td>
+			<td>20</td>
+			<td>AM RC</td>
+			<td>Man City</td>
+			<td>30</td>
+			<td>34.5</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="67278121">
+			<td>AM</td>
+			<td>77</td>
+			<td><span>Zarzana, Antonio</span></td>
+			<td>18</td>
+			<td>AM RLC</td>
+			<td>Sevilla</td>
+			<td>0.4</td>
+			<td>0.01</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="18113291">
+			<td>AM</td>
+			<td>77</td>
+			<td><span>Ait El Hadj, Anouar</span></td>
+			<td>18</td>
+			<td>AM RLC, F C</td>
+			<td>Anderlecht</td>
+			<td>3.2</td>
+			<td>0.08</td>
+			<td>be</td>
+		</tr>
+		<tr data-player-id="28126249">
+			<td>AM</td>
+			<td>79</td>
+			<td><span>McAtee, James</span></td>
+			<td>17</td>
+			<td>AM/F C</td>
+			<td>Man City</td>
+			<td>3</td>
+			<td>0.02</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="19326425" class="pab">
+			<td>AM</td>
+			<td>82</td>
+			<td><span>Lucas Lourenço</span></td>
+			<td>19</td>
+			<td>AM C</td>
+			<td>SAN</td>
+			<td>2.8</td>
+			<td>0.6</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="67260127">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Moyano, Antonio</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Córdoba</td>
+			<td>1.4</td>
+			<td>0.09</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="28120042">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Palmer, Cole</span></td>
+			<td>18</td>
+			<td>AM LC</td>
+			<td>Man City</td>
+			<td>5</td>
+			<td>0.3</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="49048370" class="paf">
+			<td>AM</td>
+			<td>75</td>
+			<td><span>Mbuku, Nathanaël</span></td>
+			<td>18</td>
+			<td>AM RC</td>
+			<td>Reims</td>
+			<td>3</td>
+			<td>0.3</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="14240703">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Sarmiento, Darío</span></td>
+			<td>17</td>
+			<td>AM LC</td>
+			<td>Estudiantes (LP)</td>
+			<td>2.2</td>
+			<td>0.7</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="28109888" class="pab">
+			<td>AM</td>
+			<td>84</td>
+			<td><span>Gomes, Angel</span></td>
+			<td>19</td>
+			<td>AM RLC</td>
+			<td>LOSC</td>
+			<td>20</td>
+			<td>7.9</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="43425611">
+			<td>AM</td>
+			<td>80</td>
+			<td><span>Oristanio, Gaetano</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>Inter</td>
+			<td>0.2</td>
+			<td>0.02</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="78088631">
+			<td>AM</td>
+			<td>81</td>
+			<td><span>Rodríguez, Santiago</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Nacional</td>
+			<td>2.3</td>
+			<td>0.9</td>
+			<td>uy</td>
+		</tr>
+		<tr data-player-id="14221545">
+			<td>AM</td>
+			<td>81</td>
+			<td><span>Zapelli, Bruno</span></td>
+			<td>18</td>
+			<td>AM C</td>
+			<td>Belgrano</td>
+			<td>1.5</td>
+			<td>0.4</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="67258577" class="pab">
+			<td>AM</td>
+			<td>85</td>
+			<td><span>Baeza, Miguel</span></td>
+			<td>20</td>
+			<td>AM RLC</td>
+			<td>Vigo</td>
+			<td>2.7</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="2000010819">
+			<td>AM</td>
+			<td>79</td>
+			<td><span>Hansen-Aarøen, Isak</span></td>
+			<td>15</td>
+			<td>AM C</td>
+			<td>Man Utd</td>
+			<td>0.1</td>
+			<td>0.07</td>
+			<td>no</td>
+		</tr>
+		<tr data-player-id="83313464" class="paf">
+			<td>AM</td>
+			<td>81</td>
+			<td><span>João Neto</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>Famalicão</td>
+			<td>0.6</td>
+			<td>0.003</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="18108540" class="pah">
+			<td>AM</td>
+			<td>84</td>
+			<td><span>David, Jonathan</span></td>
+			<td>20</td>
+			<td>AM RLC, F C</td>
+			<td>LOSC</td>
+			<td>31.9</td>
+			<td>7.9</td>
+			<td>ca</td>
+		</tr>
+		<tr data-player-id="65045256">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Velebhayi, Asanele</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>Cape Town Spurs</td>
+			<td>0.4</td>
+			<td>0.01</td>
+			<td>za</td>
+		</tr>
+		<tr data-player-id="14217804" class="pab">
+			<td>AM</td>
+			<td>84</td>
+			<td><span>Palacios, Matías</span></td>
+			<td>18</td>
+			<td>AM C</td>
+			<td>San Lorenzo</td>
+			<td>2.9</td>
+			<td>0.7</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="91182849">
+			<td>AM</td>
+			<td>82</td>
+			<td><span>Samardzic, Lazar</span></td>
+			<td>18</td>
+			<td>AM LC</td>
+			<td>RB Leipzig</td>
+			<td>3.6</td>
+			<td>0.4</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="21040164" class="paf">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Salcin, Djani</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Sarajevo</td>
+			<td>0.1</td>
+			<td>0.001</td>
+			<td>ba</td>
+		</tr>
+		<tr data-player-id="2000016607">
+			<td>AM</td>
+			<td>76</td>
+			<td><span>Vale, Harvey</span></td>
+			<td>16</td>
+			<td>AM RLC, F C</td>
+			<td>Chelsea</td>
+			<td>0.1</td>
+			<td>0.02</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="2000018196">
+			<td>AM</td>
+			<td>79</td>
+			<td><span>Alesi, Gabriele</span></td>
+			<td>16</td>
+			<td>AM C</td>
+			<td>Milan</td>
+			<td>0.2</td>
+			<td>0.003</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="28124576">
+			<td>AM</td>
+			<td>77</td>
+			<td><span>Peart-Harris, Myles</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>Chelsea</td>
+			<td>1</td>
+			<td>0.1</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="19380455">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Maurício</span></td>
+			<td>19</td>
+			<td>AM C</td>
+			<td>INT</td>
+			<td>0.4</td>
+			<td>0.3</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="51072604">
+			<td>AM</td>
+			<td>80</td>
+			<td><span>Ruiz, Marcel</span></td>
+			<td>19</td>
+			<td>AM RC</td>
+			<td>Tijuana</td>
+			<td>4.6</td>
+			<td>0.1</td>
+			<td>mx</td>
+		</tr>
+		<tr data-player-id="28106999" class="pab">
+			<td>AM</td>
+		<td class="fpa">85</td>
+			<td><span>Díaz, Brahim</span></td>
+			<td>20</td>
+			<td>AM RLC</td>
+			<td>R. Madrid</td>
+			<td>124</td>
+			<td>6.5</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="14254377">
+			<td>AM</td>
+			<td>79</td>
+			<td><span>Palacios, Tiago</span></td>
+			<td>19</td>
+			<td>AM C</td>
+			<td>Platense</td>
+			<td>0.8</td>
+			<td>0.3</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="45104608" class="pab">
+			<td>AM</td>
+			<td>86</td>
+			<td><span>Kubo, Takefusa</span></td>
+			<td>19</td>
+			<td>AM/F C</td>
+			<td>R. Madrid</td>
+			<td>38.3</td>
+			<td>4.5</td>
+			<td>jp</td>
+		</tr>
+		<tr data-player-id="91172579" class="paf">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Abouchabaka, Elias</span></td>
+			<td>20</td>
+			<td>AM RLC</td>
+			<td>Vit. Guimarães</td>
+			<td>2.7</td>
+			<td>0.1</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="29165730">
+			<td>AM</td>
+			<td>75</td>
+			<td><span>Loader, Danny</span></td>
+			<td>19</td>
+			<td>AM RLC, F C</td>
+			<td>FCP</td>
+			<td>18.2</td>
+			<td>0.2</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="2000006181">
+			<td>AM</td>
+			<td>77</td>
+			<td><span>Gharbi, Ismaël</span></td>
+			<td>16</td>
+			<td>AM C</td>
+			<td>Paris SG</td>
+			<td>0.06</td>
+			<td>0.04</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="19387391">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Miguel Silveira</span></td>
+			<td>17</td>
+			<td>AM RC</td>
+			<td>FLU</td>
+			<td>0.6</td>
+			<td>0.05</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="25062522">
+			<td>AM</td>
+			<td>76</td>
+			<td><span>Karabec, Adam</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>Sparta Prague</td>
+			<td>0.2</td>
+			<td>0.03</td>
+			<td>cz</td>
+		</tr>
+		<tr data-player-id="67287665">
+			<td>AM</td>
+			<td>79</td>
+			<td><span>Baena, Álex</span></td>
+			<td>19</td>
+			<td>AM RLC</td>
+			<td>Villarreal</td>
+			<td>4.4</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67269203" class="paf">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Larrubia, David</span></td>
+			<td>18</td>
+			<td>AM RLC</td>
+			<td>Málaga</td>
+			<td>2.7</td>
+			<td>0.2</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="83335589">
+			<td>AM</td>
+			<td>81</td>
+			<td><span>Félix, Hugo</span></td>
+			<td>16</td>
+			<td>AM C</td>
+			<td>SLB</td>
+			<td>0.06</td>
+			<td>0.001</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="12078200">
+			<td>AM</td>
+			<td>77</td>
+			<td><span>Guiagon, Parfait</span></td>
+			<td>19</td>
+			<td>AM RLC</td>
+			<td>Maccabi Tel-Aviv</td>
+			<td>2.5</td>
+			<td>0.1</td>
+			<td>ci</td>
+		</tr>
+		<tr data-player-id="67295208">
+			<td>AM</td>
+			<td>77</td>
+			<td><span>Goti, Mikel</span></td>
+			<td>18</td>
+			<td>AM LC</td>
+			<td>A. Bilbao</td>
+			<td>1.2</td>
+			<td>0.04</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="29221846">
+			<td>AM</td>
+			<td>79</td>
+			<td><span>Olise, Michael</span></td>
+			<td>18</td>
+			<td>AM LC</td>
+			<td>Reading</td>
+			<td>2.5</td>
+			<td>2.9</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="14172522" class="pab">
+			<td>AM</td>
+			<td>84</td>
+			<td><span>Almada, Thiago</span></td>
+			<td>19</td>
+			<td>AM RLC, F C</td>
+			<td>Vélez</td>
+			<td>4.4</td>
+			<td>2.2</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="22074169" class="paf">
+			<td>AM</td>
+			<td>81</td>
+			<td><span>Yankov, Dominik</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Ludogorets</td>
+			<td>1.4</td>
+			<td>0.09</td>
+			<td>bg</td>
+		</tr>
+		<tr data-player-id="37079279" class="pah">
+			<td>AM</td>
+			<td>90</td>
+			<td><span>Ünüvar, Naci</span></td>
+			<td>17</td>
+			<td>AM LC, F C</td>
+			<td>Ajax</td>
+			<td>0.1</td>
+			<td>0.1</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="67263884" class="pab">
+			<td>AM</td>
+			<td>82</td>
+			<td><span>Morilla, Pelayo</span></td>
+			<td>19</td>
+			<td>AM LC</td>
+			<td>S. Gijón</td>
+			<td>1.4</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="61091349">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Mochrie, Chris</span></td>
+			<td>17</td>
+			<td>AM LC</td>
+			<td>Dundee Utd</td>
+			<td>0.6</td>
+			<td>0.01</td>
+			<td>gb-sct</td>
+		</tr>
+		<tr data-player-id="91193048">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Wirtz, Florian</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>Bayer 04</td>
+			<td>1.3</td>
+			<td>0.05</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="53170349">
+			<td>AM</td>
+			<td>79</td>
+			<td><span>Holm, Odin Thiago</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>Vålerenga</td>
+			<td>0.4</td>
+			<td>0.007</td>
+			<td>no</td>
+		</tr>
+		<tr data-player-id="67277676">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Melamed, Nico</span></td>
+			<td>19</td>
+			<td>AM/F C</td>
+			<td>Espanyol</td>
+			<td>3.3</td>
+			<td>0.3</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67293495" class="pag">
+			<td>AM</td>
+			<td>92</td>
+			<td><span>Pedri</span></td>
+			<td>17</td>
+			<td>AM RLC</td>
+			<td>Barcelona</td>
+			<td>22.7</td>
+			<td>7.6</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="83261899" class="pab">
+			<td>AM</td>
+			<td>83</td>
+			<td><span>Nascimento, Diogo</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>SLB</td>
+			<td>2.5</td>
+			<td>0.01</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="83169822" class="pag">
+			<td>AM</td>
+			<td>91</td>
+			<td><span>Félix, João</span></td>
+			<td>20</td>
+			<td>AM RLC, F C</td>
+			<td>A. Madrid</td>
+			<td>164</td>
+			<td>37.4</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="83209465">
+			<td>AM</td>
+			<td>79</td>
+			<td><span>Camará, Ronaldo</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>SLB</td>
+			<td>2.7</td>
+			<td>0.1</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="83169918">
+			<td>AM</td>
+			<td>79</td>
+			<td><span>Sousa, Bernardo</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Sporting</td>
+			<td>2</td>
+			<td>0.04</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="19354888" class="pah">
+			<td>AM</td>
+			<td>86</td>
+			<td><span>Reinier</span></td>
+			<td>18</td>
+			<td>AM C</td>
+			<td>R. Madrid</td>
+			<td>9.2</td>
+			<td>1.1</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="43371896">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Maldini, Daniel</span></td>
+			<td>18</td>
+			<td>AM RLC</td>
+			<td>Milan</td>
+			<td>10.6</td>
+			<td>0.2</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="13200568" class="pab">
+			<td>AM</td>
+			<td>79</td>
+			<td><span>Kudus, Mohammed</span></td>
+			<td>19</td>
+			<td>AM C</td>
+			<td>Ajax</td>
+			<td>5.1</td>
+			<td>4.6</td>
+			<td>gh</td>
+		</tr>
+		<tr data-player-id="2000013421">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Álex Cardero</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>Oviedo</td>
+			<td>0.4</td>
+			<td>0.02</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="49052213">
+			<td>AM</td>
+			<td>79</td>
+			<td><span>Navarro, Robert</span></td>
+			<td>18</td>
+			<td>AM RLC</td>
+			<td>Real San Sebastián</td>
+			<td>1.4</td>
+			<td>0.06</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="28121366" class="pab">
+			<td>AM</td>
+			<td>79</td>
+			<td><span>Anjorin, Faustino</span></td>
+			<td>18</td>
+			<td>AM C</td>
+			<td>Chelsea</td>
+			<td>12.5</td>
+			<td>0.5</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="2000049211">
+			<td>AM</td>
+			<td>80</td>
+			<td><span>Balagizi, James</span></td>
+			<td>16</td>
+			<td>AM/F C</td>
+			<td>Liverpool</td>
+			<td>0.1</td>
+			<td>0.02</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="20046423">
+			<td>AM</td>
+			<td>77</td>
+			<td><span>Aaronson, Brenden</span></td>
+			<td>19</td>
+			<td>AM C</td>
+			<td>Philadelphia</td>
+			<td>1.4</td>
+			<td>1.3</td>
+			<td>us</td>
+		</tr>
+		<tr data-player-id="18105040" class="pab">
+			<td>AM</td>
+			<td>81</td>
+			<td><span>Verschaeren, Yari</span></td>
+			<td>19</td>
+			<td>AM RLC</td>
+			<td>Anderlecht</td>
+			<td>5.9</td>
+			<td>0.2</td>
+			<td>be</td>
+		</tr>
+		<tr data-player-id="43426015" class="pab">
+			<td>AM</td>
+			<td>83</td>
+			<td><span>Tongya, Franco</span></td>
+			<td>18</td>
+			<td>AM RC</td>
+			<td>Zebre</td>
+			<td>0.2</td>
+			<td>0.1</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="67281485">
+			<td>AM</td>
+			<td>77</td>
+			<td><span>Rodri</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Real Hispalis</td>
+			<td>0.4</td>
+			<td>0.01</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="2000013231">
+			<td>AM</td>
+			<td>81</td>
+			<td><span>McNeill, Charlie</span></td>
+			<td>16</td>
+			<td>AM/F C</td>
+			<td>Man Utd</td>
+			<td>0.1</td>
+			<td>0.02</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="28109942">
+			<td>AM</td>
+			<td>80</td>
+			<td><span>Smallbone, Will</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Southampton</td>
+			<td>10</td>
+			<td>0.3</td>
+			<td>ie</td>
+		</tr>
+		<tr data-player-id="28109599" class="pab">
+			<td>AM</td>
+		<td class="fpa">79</td>
+			<td><span>Smith Rowe, Emile</span></td>
+			<td>20</td>
+			<td>AM RLC</td>
+			<td>Arsenal</td>
+			<td>10</td>
+			<td>12.9</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="83174759" class="pab">
+			<td>AM</td>
+			<td>85</td>
+			<td><span>Vieira, Fábio</span></td>
+			<td>20</td>
+			<td>AM LC</td>
+			<td>FCP</td>
+			<td>4.6</td>
+			<td>1.6</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="76050955">
+			<td>AM</td>
+			<td>79</td>
+			<td><span>Campaz, Jaminton</span></td>
+			<td>20</td>
+			<td>AM LC</td>
+			<td>Deportes Tolima</td>
+			<td>4.7</td>
+			<td>0.5</td>
+			<td>co</td>
+		</tr>
+		<tr data-player-id="12081995">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Ouattara, Brahima</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>RC Abidjan</td>
+			<td>0.1</td>
+			<td>0.1</td>
+			<td>ci</td>
+		</tr>
+		<tr data-player-id="43317933" class="pab">
+			<td>AM</td>
+		<td class="fpa">83</td>
+			<td><span>Traoré, Hamed Junior</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Empoli</td>
+			<td>17.7</td>
+			<td>4.6</td>
+			<td>ci</td>
+		</tr>
+		<tr data-player-id="62175128" class="paf">
+			<td>AM</td>
+			<td>81</td>
+			<td><span>Nikolic, Veljko</span></td>
+			<td>20</td>
+			<td>AM C</td>
+			<td>Red Star</td>
+			<td>0.8</td>
+			<td>0.1</td>
+			<td>rs</td>
+		</tr>
+		<tr data-player-id="67256514" class="paf">
+			<td>AM</td>
+			<td>80</td>
+			<td><span>Gelabert, César</span></td>
+			<td>19</td>
+			<td>AM RLC</td>
+			<td>R. Madrid</td>
+			<td>3.3</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="59123271">
+			<td>AM</td>
+			<td>76</td>
+			<td><span>Chakvetadze, Giorgi</span></td>
+			<td>20</td>
+			<td>AM LC</td>
+			<td>AA Gent</td>
+			<td>11.4</td>
+			<td>0.8</td>
+			<td>ge</td>
+		</tr>
+		<tr data-player-id="19368080">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Ivonei</span></td>
+			<td>18</td>
+			<td>AM C</td>
+			<td>SAN</td>
+			<td>0.9</td>
+			<td>0.08</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="16184707">
+			<td>AM</td>
+			<td>79</td>
+			<td><span>Baumgartner, Christoph</span></td>
+			<td>20</td>
+			<td>AM/F C</td>
+			<td>Hoffenheim</td>
+			<td>7.7</td>
+			<td>0.8</td>
+			<td>at</td>
+		</tr>
+		<tr data-player-id="19364342">
+			<td>AM</td>
+			<td>81</td>
+			<td><span>Peglow</span></td>
+			<td>18</td>
+			<td>AM/F C</td>
+			<td>INT</td>
+			<td>2.7</td>
+			<td>0.07</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="28127065">
+			<td>AM</td>
+			<td>76</td>
+			<td><span>Ramsey, Aaron</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>Aston Villa</td>
+			<td>0.1</td>
+			<td>0.02</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="67276375" class="pab">
+			<td>AM</td>
+			<td>80</td>
+			<td><span>Oroz, Aimar</span></td>
+			<td>18</td>
+			<td>AM LC</td>
+			<td>Atlético Pamplona</td>
+			<td>0.3</td>
+			<td>0.01</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="70118972">
+			<td>AM</td>
+			<td>82</td>
+			<td><span>Beyaz, Ömer</span></td>
+			<td>16</td>
+			<td>AM C</td>
+			<td>Fenerbahçe</td>
+			<td>0.2</td>
+			<td>0.1</td>
+			<td>tr</td>
+		</tr>
+		<tr data-player-id="49048469">
+			<td>AM</td>
+			<td>80</td>
+			<td><span>Millot, Enzo</span></td>
+			<td>18</td>
+			<td>AM RLC</td>
+			<td>AS Monaco</td>
+			<td>6.6</td>
+			<td>0.1</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="24065945">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Cubelic, Ivan</span></td>
+			<td>17</td>
+			<td>AM C</td>
+			<td>Hajduk</td>
+			<td>0</td>
+			<td>0.007</td>
+			<td>hr</td>
+		</tr>
+		<tr data-player-id="93104332">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Nygren, Benjamin</span></td>
+			<td>19</td>
+			<td>AM RLC, F C</td>
+			<td>KRC Genk</td>
+			<td>6.8</td>
+			<td>0.5</td>
+			<td>se</td>
+		</tr>
+		<tr data-player-id="67260506" class="pab">
+			<td>AM</td>
+			<td>83</td>
+			<td><span>Lee, Kang-In</span></td>
+			<td>19</td>
+			<td>AM RLC</td>
+			<td>Valencia</td>
+			<td>18.9</td>
+			<td>6</td>
+			<td>kr</td>
+		</tr>
+		<tr data-player-id="14204638">
+			<td>AM</td>
+			<td>80</td>
+			<td><span>Sforza, Juan</span></td>
+			<td>18</td>
+			<td>AM C</td>
+			<td>Newell's</td>
+			<td>1.6</td>
+			<td>0.6</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="83261936">
+			<td>AM</td>
+			<td>76</td>
+			<td><span>Brazão, Pedro</span></td>
+			<td>17</td>
+			<td>AM RC</td>
+			<td>OGC Nice</td>
+			<td>0.5</td>
+			<td>0.02</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="49038961">
+			<td>AM</td>
+			<td>78</td>
+			<td><span>Gboho, Yann</span></td>
+			<td>19</td>
+			<td>AM LC, F C</td>
+			<td>Rennes</td>
+			<td>3.2</td>
+			<td>0.3</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="72051281" class="pah">
+			<td>AM</td>
+			<td>86</td>
+			<td><span>Reyna, Giovanni</span></td>
+			<td>17</td>
+			<td>AM LC</td>
+			<td>Borussia Dortmund</td>
+			<td>15.3</td>
+			<td>1</td>
+			<td>us</td>
+		</tr>
+		<tr data-player-id="49037827">
+			<td>AM</td>
+			<td>81</td>
+			<td><span>Diop, Sofiane</span></td>
+			<td>20</td>
+			<td>AM RLC</td>
+			<td>AS Monaco</td>
+			<td>6.1</td>
+			<td>1.6</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="91190766">
+			<td>AM</td>
+			<td>77</td>
+			<td><span>Egloff, Lilian</span></td>
+			<td>17</td>
+			<td>AM RLC</td>
+			<td>VfB Stuttgart</td>
+			<td>1</td>
+			<td>0.15</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="70131633" class="pab">
+			<td>AM</td>
+			<td>86</td>
+			<td><span>Ince, Burak</span></td>
+			<td>16</td>
+			<td>AM C</td>
+			<td>Altinordu</td>
+			<td>0.1</td>
+			<td>0.34</td>
+			<td>tr</td>
+		</tr>
+		<tr data-player-id="2000065610" class="pab">
+			<td>AM</td>
+			<td>82</td>
+			<td><span>Sieb, Armindo</span></td>
+			<td>17</td>
+			<td>AM/F C</td>
+			<td>FC Bayern</td>
+			<td>0.06</td>
+			<td>0.13</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="2000066000">
+			<td>AM</td>
+			<td>77</td>
+			<td><span>Wening, Marcel</span></td>
+			<td>16</td>
+			<td>AM RLC</td>
+			<td>FC Bayern</td>
+			<td>0.06</td>
+			<td>0.09</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="28121564" class="pag">
+			<td>ST</td>
+			<td class="fpa">90</td>
+			<td><span>Greenwood, Mason</span></td>
+			<td>18</td>
+			<td>AM R, ST</td>
+			<td>Man Utd</td>
+			<td>25</td>
+			<td>30.1</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="37060951" class="pah">
+			<td>ST</td>
+			<td>84</td>
+			<td><span>Boadu, Myron</span></td>
+			<td>19</td>
+			<td>AM RL, ST</td>
+			<td>AZ</td>
+			<td>9.3</td>
+			<td>7.7</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="43425069" class="pah">
+			<td>ST</td>
+			<td>87</td>
+			<td><span>Esposito, Sebastiano</span></td>
+			<td>18</td>
+			<td>ST</td>
+			<td>Inter</td>
+			<td>3.2</td>
+			<td>0.5</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="19380666" class="pab">
+			<td>ST</td>
+			<td>83</td>
+			<td><span>Marcos Leonardo</span></td>
+			<td>17</td>
+			<td>AM L, ST</td>
+			<td>SAN</td>
+			<td>0.3</td>
+			<td>0.2</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="19342183" class="pah">
+			<td>ST</td>
+			<td class="fpa">86</td>
+			<td><span>Evanilson</span></td>
+			<td>20</td>
+			<td>AM L, ST</td>
+			<td>FCP</td>
+			<td>18.1</td>
+			<td>5.5</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="83297601" class="pab">
+			<td>ST</td>
+			<td>82</td>
+			<td><span>Resende, João</span></td>
+			<td>17</td>
+			<td>ST</td>
+			<td>SLB</td>
+			<td>1.3</td>
+			<td>0.007</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="65043378" class="paf">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Hlongwane, Bongokuhle</span></td>
+			<td>20</td>
+			<td>ST</td>
+			<td>Maritzburg Utd</td>
+			<td>0.9</td>
+			<td>0.03</td>
+			<td>za</td>
+		</tr>
+		<tr data-player-id="43372893" class="pab">
+			<td>ST</td>
+			<td>83</td>
+			<td><span>Salcedo, Eddie</span></td>
+			<td>18</td>
+			<td>AM LC, F C</td>
+			<td>Inter</td>
+			<td>5.6</td>
+			<td>1.2</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="37076259">
+			<td>ST</td>
+			<td>79</td>
+			<td><span>Postema, Romano</span></td>
+			<td>18</td>
+			<td>ST</td>
+			<td>FC Groningen</td>
+			<td>1</td>
+			<td>0.2</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="19348862" class="pab">
+			<td>ST</td>
+			<td>84</td>
+			<td><span>Kaio Jorge</span></td>
+			<td>18</td>
+			<td>ST</td>
+			<td>SAN</td>
+			<td>2.5</td>
+			<td>1.2</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="28116934">
+			<td>ST</td>
+			<td>80</td>
+			<td><span>Cassidy, Ryan</span></td>
+			<td>19</td>
+			<td>ST</td>
+			<td>Watford</td>
+			<td>0.7</td>
+			<td>0.1</td>
+			<td>ie</td>
+		</tr>
+		<tr data-player-id="78093573">
+			<td>ST</td>
+			<td>79</td>
+			<td><span>Gutiérrez, Juan Manuel</span></td>
+			<td>18</td>
+			<td>ST</td>
+			<td>Almería</td>
+			<td>2.7</td>
+			<td>0.2</td>
+			<td>uy</td>
+		</tr>
+		<tr data-player-id="67277704">
+			<td>ST</td>
+			<td>80</td>
+			<td><span>Escobar, Jordi</span></td>
+			<td>18</td>
+			<td>AM L, ST</td>
+			<td>Almería</td>
+			<td>17.5</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="16337080">
+			<td>ST</td>
+			<td>76</td>
+			<td><span>Reischl, Luka</span></td>
+			<td>16</td>
+			<td>ST</td>
+			<td>FC RB Salzburg</td>
+			<td>0.06</td>
+			<td>0.001</td>
+			<td>at</td>
+		</tr>
+		<tr data-player-id="95078291">
+			<td>ST</td>
+			<td>85</td>
+			<td><span>Carbonell, Luis</span></td>
+			<td>17</td>
+			<td>ST</td>
+			<td>Zaragoza</td>
+			<td>0.3</td>
+			<td>0.01</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="62175144">
+			<td>ST</td>
+			<td>81</td>
+			<td><span>Joveljic, Dejan</span></td>
+			<td>20</td>
+			<td>ST</td>
+			<td>Eintracht Frankfurt</td>
+			<td>17.5</td>
+			<td>0.9</td>
+			<td>rs</td>
+		</tr>
+		<tr data-player-id="43274977">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Kean, Moise</span></td>
+			<td>20</td>
+			<td>AM RL, ST</td>
+			<td>Everton</td>
+			<td>50</td>
+			<td>9.1</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="67276230">
+			<td>ST</td>
+			<td>81</td>
+			<td><span>Williams, Nico</span></td>
+			<td>18</td>
+			<td>ST</td>
+			<td>A. Bilbao</td>
+			<td>1.2</td>
+			<td>0.04</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="91170086" class="paf">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Burkardt, Jonathan</span></td>
+			<td>20</td>
+			<td>AM RL, ST</td>
+			<td>Mainz 05</td>
+			<td>4.1</td>
+			<td>0.6</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="83297612">
+			<td>ST</td>
+			<td>80</td>
+			<td><span>Gomes, Lucas</span></td>
+			<td>17</td>
+			<td>ST</td>
+			<td>FCP</td>
+			<td>1.3</td>
+			<td>0.003</td>
+			<td>se</td>
+		</tr>
+		<tr data-player-id="78094563" class="pab">
+			<td>ST</td>
+			<td>83</td>
+			<td><span>Arezo, Matías</span></td>
+			<td>17</td>
+			<td>ST</td>
+			<td>River Plate de Montevideo</td>
+			<td>0.8</td>
+			<td>1</td>
+			<td>uy</td>
+		</tr>
+		<tr data-player-id="2000018201">
+			<td>ST</td>
+			<td>76</td>
+			<td><span>Rossi, Leonardo</span></td>
+			<td>16</td>
+			<td>ST</td>
+			<td>Milan</td>
+			<td>0.2</td>
+			<td>0.002</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="19360615" class="paf">
+			<td>ST</td>
+			<td>77</td>
+			<td><span>Vinícius Popó</span></td>
+			<td>19</td>
+			<td>ST</td>
+			<td>CEC</td>
+			<td>0.3</td>
+			<td>0.04</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="14236701">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Ovando, Lautaro</span></td>
+			<td>17</td>
+			<td>ST</td>
+			<td>Argentinos Jrs.</td>
+			<td>1.8</td>
+			<td>0.8</td>
+			<td>ar</td>
+		</tr>
+		<tr data-player-id="24065111">
+			<td>ST</td>
+			<td>79</td>
+			<td><span>Barisic, Bartol</span></td>
+			<td>17</td>
+			<td>ST</td>
+			<td>Dinamo</td>
+			<td>0.2</td>
+			<td>0.01</td>
+			<td>hr</td>
+		</tr>
+		<tr data-player-id="37079095">
+			<td>ST</td>
+			<td>80</td>
+			<td><span>Barasi, Yusuf</span></td>
+			<td>17</td>
+			<td>AM L, ST</td>
+			<td>AZ</td>
+			<td>0.4</td>
+			<td>0.07</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="222724">
+			<td>ST</td>
+			<td>82</td>
+			<td><span>Gelhardt, Joe</span></td>
+			<td>18</td>
+			<td>AM/F C</td>
+			<td>Leeds</td>
+			<td>5</td>
+			<td>0.4</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="19371032" class="pab">
+			<td>ST</td>
+			<td>84</td>
+			<td><span>Lázaro</span></td>
+			<td>18</td>
+			<td>AM LC, F C</td>
+			<td>FLA</td>
+			<td>1.6</td>
+			<td>0.03</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="2000006283">
+			<td>ST</td>
+			<td>82</td>
+			<td><span>Lochereau-Pho, Yad</span></td>
+			<td>16</td>
+			<td>ST</td>
+			<td>OL</td>
+			<td>0.06</td>
+			<td>0.05</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="67272501">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Mollejo, Víctor</span></td>
+			<td>19</td>
+			<td>AM RL, ST</td>
+			<td>A. Madrid</td>
+			<td>5.9</td>
+			<td>0.2</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="2000053118">
+			<td>ST</td>
+			<td>80</td>
+			<td><span>Sala</span></td>
+			<td>17</td>
+			<td>ST</td>
+			<td>R. Madrid</td>
+			<td>0.5</td>
+			<td>0.01</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="28126247" class="pab">
+			<td>ST</td>
+			<td>83</td>
+			<td><span>Delap, Liam</span></td>
+			<td>17</td>
+			<td>ST</td>
+			<td>Man City</td>
+			<td>5</td>
+			<td>0.3</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="90066257" class="paf">
+			<td>ST</td>
+			<td>77</td>
+			<td><span>Morton, Callum</span></td>
+			<td>20</td>
+			<td>AM L, ST</td>
+			<td>West Brom</td>
+			<td>2</td>
+			<td>0.5</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="83228802" class="pah">
+			<td>ST</td>
+			<td>85</td>
+			<td><span>Silva, Fábio</span></td>
+			<td>18</td>
+			<td>ST</td>
+			<td>Wolves</td>
+			<td>35</td>
+			<td>2.2</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="19302917" class="pab">
+			<td>ST</td>
+			<td>84</td>
+			<td><span>Brenner</span></td>
+			<td>20</td>
+			<td>ST</td>
+			<td>SPO</td>
+			<td>4.5</td>
+			<td>1.2</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="19371552" class="pah">
+			<td>ST</td>
+			<td>84</td>
+			<td><span>João Pedro</span></td>
+			<td>18</td>
+			<td>AM RL, ST</td>
+			<td>Watford</td>
+			<td>20</td>
+			<td>6.2</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="2000051398">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Kavanagh, Calum</span></td>
+			<td>16</td>
+			<td>AM LC, F C</td>
+			<td>Middlesbrough</td>
+			<td>0.1</td>
+			<td>0.006</td>
+			<td>ie</td>
+		</tr>
+		<tr data-player-id="12079019" class="pab">
+			<td>ST</td>
+			<td>81</td>
+			<td><span>Badji, Youssouph</span></td>
+			<td>18</td>
+			<td>ST</td>
+			<td>Club Brugge</td>
+			<td>2.7</td>
+			<td>2.6</td>
+			<td>sn</td>
+		</tr>
+		<tr data-player-id="51063399" class="pab">
+			<td>ST</td>
+			<td>84</td>
+			<td><span>Macías, José Juan</span></td>
+			<td>20</td>
+			<td>AM L, ST</td>
+			<td>Chivas</td>
+			<td>10.4</td>
+			<td>0.5</td>
+			<td>mx</td>
+		</tr>
+		<tr data-player-id="91172554">
+			<td>ST</td>
+			<td>80</td>
+			<td><span>Arp, Fiete</span></td>
+			<td>20</td>
+			<td>ST</td>
+			<td>FC Bayern</td>
+			<td>87.8</td>
+			<td>0.4</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="62182055" class="pah">
+			<td>ST</td>
+		<td class="fpa">85</td>
+			<td><span>Vlahovic, Dušan</span></td>
+			<td>20</td>
+			<td>ST</td>
+			<td>Fiorentina</td>
+			<td>26</td>
+			<td>4.8</td>
+			<td>rs</td>
+		</tr>
+		<tr data-player-id="70118958">
+			<td>ST</td>
+			<td>81</td>
+			<td><span>Akman, Ali</span></td>
+			<td>18</td>
+			<td>ST</td>
+			<td>Bursaspor</td>
+			<td>0.2</td>
+			<td>2.7</td>
+			<td>tr</td>
+		</tr>
+		<tr data-player-id="2000034596">
+			<td>ST</td>
+			<td>80</td>
+			<td><span>García, Andrés</span></td>
+			<td>17</td>
+			<td>ST</td>
+			<td>Valencia</td>
+			<td>1.4</td>
+			<td>0.05</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="19326424">
+			<td>ST</td>
+			<td>76</td>
+			<td><span>Yuri Alberto</span></td>
+			<td>19</td>
+			<td>AM R, ST</td>
+			<td>INT</td>
+			<td>6.3</td>
+			<td>0.2</td>
+			<td>br</td>
+		</tr>
+		<tr data-player-id="2000016605">
+			<td>ST</td>
+			<td>77</td>
+			<td><span>Soonsup-Bell, Jude</span></td>
+			<td>16</td>
+			<td>ST</td>
+			<td>Chelsea</td>
+			<td>0.1</td>
+			<td>0.01</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="67258829">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Niño, Fernando</span></td>
+			<td>19</td>
+			<td>ST</td>
+			<td>Villarreal</td>
+			<td>4.9</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="67270540">
+			<td>ST</td>
+			<td>81</td>
+			<td><span>Garcés, Borja</span></td>
+			<td>20</td>
+			<td>ST</td>
+			<td>A. Madrid</td>
+			<td>3.6</td>
+			<td>0.1</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="49048380">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Rutter, Georginio</span></td>
+			<td>18</td>
+			<td>ST</td>
+			<td>Rennes</td>
+			<td>0.5</td>
+			<td>0.05</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="79033430">
+			<td>ST</td>
+			<td>76</td>
+			<td><span>Ovelar, Fernando</span></td>
+			<td>16</td>
+			<td>ST</td>
+			<td>Cerro Porteño</td>
+			<td>0.06</td>
+			<td>0.2</td>
+			<td>py</td>
+		</tr>
+		<tr data-player-id="86065934">
+			<td>ST</td>
+			<td>81</td>
+			<td><span>Campana, Leonardo</span></td>
+			<td>20</td>
+			<td>ST</td>
+			<td>Wolves</td>
+			<td>15</td>
+			<td>0.5</td>
+			<td>ec</td>
+		</tr>
+		<tr data-player-id="84152927">
+			<td>ST</td>
+			<td>80</td>
+			<td><span>von Moos, Julian</span></td>
+			<td>19</td>
+			<td>AM RL, ST</td>
+			<td>Basel</td>
+			<td>1.2</td>
+			<td>0.2</td>
+			<td>ch</td>
+		</tr>
+		<tr data-player-id="28115786">
+			<td>ST</td>
+			<td>77</td>
+			<td><span>Glatzel, Paul</span></td>
+			<td>19</td>
+			<td>AM RLC, F C</td>
+			<td>Liverpool</td>
+			<td>3</td>
+			<td>0.05</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="13157142">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Koïta, Sékou</span></td>
+			<td>20</td>
+			<td>ST</td>
+			<td>FC RB Salzburg</td>
+			<td>4.3</td>
+			<td>0.4</td>
+			<td>ml</td>
+		</tr>
+		<tr data-player-id="71106198">
+			<td>ST</td>
+			<td>79</td>
+			<td><span>Sikan, Danylo</span></td>
+			<td>19</td>
+			<td>AM R, ST</td>
+			<td>Shakhtar</td>
+			<td>1.8</td>
+			<td>0.3</td>
+			<td>ua</td>
+		</tr>
+		<tr data-player-id="67272502">
+			<td>ST</td>
+			<td>81</td>
+			<td><span>Camello, Sergio</span></td>
+			<td>19</td>
+			<td>ST</td>
+			<td>A. Madrid</td>
+			<td>1.2</td>
+			<td>0.04</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="43297484" class="paf">
+			<td>ST</td>
+			<td>79</td>
+			<td><span>Millico, Vincenzo</span></td>
+			<td>19</td>
+			<td>AM LC, F C</td>
+			<td>Torino</td>
+			<td>6.5</td>
+			<td>0.8</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="13224509">
+			<td>ST</td>
+			<td>79</td>
+			<td><span>Ubani, Wisdom</span></td>
+			<td>17</td>
+			<td>ST</td>
+			<td>Giant Brillars</td>
+			<td>0.09</td>
+			<td>0.04</td>
+			<td>ng</td>
+		</tr>
+		<tr data-player-id="83209468" class="pab">
+			<td>ST</td>
+			<td>84</td>
+			<td><span>Ramos, Gonçalo</span></td>
+			<td>19</td>
+			<td>AM/F C</td>
+			<td>SLB</td>
+			<td>4.1</td>
+			<td>0.4</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="43344129" class="pab">
+			<td>ST</td>
+			<td>83</td>
+			<td><span>Pellegri, Pietro</span></td>
+			<td>19</td>
+			<td>ST</td>
+			<td>AS Monaco</td>
+			<td>17.8</td>
+			<td>0.7</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="2000054216">
+			<td>ST</td>
+			<td>79</td>
+			<td><span>Scarlett, Dane</span></td>
+			<td>16</td>
+			<td>ST</td>
+			<td>Tottenham</td>
+			<td>0.1</td>
+			<td>0.1</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="27148020">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Daramy, Mohamed</span></td>
+			<td>18</td>
+			<td>AM L, ST</td>
+			<td>FC København</td>
+			<td>2.4</td>
+			<td>0.1</td>
+			<td>dk</td>
+		</tr>
+		<tr data-player-id="49038936">
+			<td>ST</td>
+			<td>79</td>
+			<td><span>Geubbels, Willem</span></td>
+			<td>18</td>
+			<td>AM RL, ST</td>
+			<td>AS Monaco</td>
+			<td>23.1</td>
+			<td>0.2</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="67293620">
+			<td>ST</td>
+			<td>77</td>
+			<td><span>Vassi</span></td>
+			<td>19</td>
+			<td>AM R, ST</td>
+			<td>Arouca</td>
+			<td>1.3</td>
+			<td>0.05</td>
+			<td>es</td>
+		</tr>
+		<tr data-player-id="28122837" class="pah">
+			<td>ST</td>
+			<td>84</td>
+			<td><span>Parrott, Troy</span></td>
+			<td>18</td>
+			<td>ST</td>
+			<td>Tottenham</td>
+			<td>10</td>
+			<td>5</td>
+			<td>ie</td>
+		</tr>
+		<tr data-player-id="43316850" class="paf">
+			<td>ST</td>
+			<td>83</td>
+			<td><span>Raspadori, Giacomo</span></td>
+			<td>20</td>
+			<td>AM LC, F C</td>
+			<td>Sassuolo</td>
+			<td>3.2</td>
+			<td>1.2</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="2000047235">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Flores, Marcelo</span></td>
+			<td>16</td>
+			<td>AM RLC, F C</td>
+			<td>Arsenal</td>
+			<td>0.1</td>
+			<td>0.007</td>
+			<td>mx</td>
+		</tr>
+		<tr data-player-id="28108499">
+			<td>ST</td>
+			<td>79</td>
+			<td><span>Campbell, Tyrese</span></td>
+			<td>20</td>
+			<td>AM R, ST</td>
+			<td>Stoke</td>
+			<td>7</td>
+			<td>0.6</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="43500350" class="pab">
+			<td>ST</td>
+			<td>85</td>
+			<td><span>Gnonto, Wilfried</span></td>
+			<td>16</td>
+			<td>AM/F C</td>
+			<td>Zürich</td>
+			<td>0.2</td>
+			<td>0.03</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="28127165" class="pab">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Stewart, Layton</span></td>
+			<td>17</td>
+			<td>ST</td>
+			<td>Liverpool</td>
+			<td>0.7</td>
+			<td>0.01</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="28116305">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Balogun, Folarin</span></td>
+			<td>19</td>
+			<td>AM R, ST</td>
+			<td>Arsenal</td>
+			<td>2</td>
+			<td>0.3</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="92092175">
+			<td>ST</td>
+			<td>83</td>
+			<td><span>Sargent, Josh</span></td>
+			<td>20</td>
+			<td>ST</td>
+			<td>SV Werder</td>
+			<td>12.3</td>
+			<td>0.4</td>
+			<td>us</td>
+		</tr>
+		<tr data-player-id="54200063">
+			<td>ST</td>
+			<td>80</td>
+			<td><span>Ali, Mohanad</span></td>
+			<td>20</td>
+			<td>ST</td>
+			<td>Al-Duhail</td>
+			<td>18.6</td>
+			<td>1.3</td>
+			<td>iq</td>
+		</tr>
+		<tr data-player-id="28109945">
+			<td>ST</td>
+			<td>75</td>
+			<td><span>Obafemi, Michael</span></td>
+			<td>20</td>
+			<td>AM R, ST</td>
+			<td>Southampton</td>
+			<td>10</td>
+			<td>2.2</td>
+			<td>ie</td>
+		</tr>
+		<tr data-player-id="37065620">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Brobbey, Brian</span></td>
+			<td>18</td>
+			<td>AM L, ST</td>
+			<td>Ajax</td>
+			<td>0.7</td>
+			<td>0.1</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="37088234">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Emegha, Emanuel</span></td>
+			<td>17</td>
+			<td>ST</td>
+			<td>Sparta</td>
+			<td>0.5</td>
+			<td>0.1</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="13136663" class="paf">
+			<td>ST</td>
+			<td>73</td>
+			<td><span>Niangbo, Anderson</span></td>
+			<td>20</td>
+			<td>AM RL, ST</td>
+			<td>AA Gent</td>
+			<td>11.4</td>
+			<td>0.5</td>
+			<td>ci</td>
+		</tr>
+		<tr data-player-id="78097218">
+			<td>ST</td>
+			<td>77</td>
+			<td><span>Satriano, Martín</span></td>
+			<td>19</td>
+			<td>ST</td>
+			<td>Inter</td>
+			<td>0.7</td>
+			<td>0.03</td>
+			<td>uy</td>
+		</tr>
+		<tr data-player-id="16279486" class="pah">
+			<td>ST</td>
+			<td>81</td>
+			<td><span>Adeyemi, Karim</span></td>
+			<td>18</td>
+			<td>AM R, ST</td>
+			<td>FC RB Salzburg</td>
+			<td>7</td>
+			<td>1</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="28111384">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Hornby, Fraser</span></td>
+			<td>20</td>
+			<td>AM/F C</td>
+			<td>Reims</td>
+			<td>7.3</td>
+			<td>0.1</td>
+			<td>gb-sct</td>
+		</tr>
+		<tr data-player-id="18116093">
+			<td>ST</td>
+			<td>80</td>
+			<td><span>Camara, Abdoul Karim</span></td>
+			<td>16</td>
+			<td>ST</td>
+			<td>Hoffenheim</td>
+			<td>0.06</td>
+			<td>0.02</td>
+			<td>sn</td>
+		</tr>
+		<tr data-player-id="43424893">
+			<td>ST</td>
+			<td>80</td>
+			<td><span>Colombo, Lorenzo</span></td>
+			<td>18</td>
+			<td>ST</td>
+			<td>Milan</td>
+			<td>10.6</td>
+			<td>0.2</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="49054676">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Wamangituka, Silas</span></td>
+			<td>20</td>
+			<td>ST</td>
+			<td>VfB Stuttgart</td>
+			<td>10.5</td>
+			<td>2.9</td>
+			<td>cd</td>
+		</tr>
+		<tr data-player-id="28109689">
+			<td>ST</td>
+			<td>82</td>
+			<td><span>Brewster, Rhian</span></td>
+			<td>20</td>
+			<td>ST</td>
+			<td>Sheff Utd</td>
+			<td>42.5</td>
+			<td>8.5</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="93070286" class="pah">
+			<td>ST</td>
+		<td class="fpa">87</td>
+			<td><span>Isak, Alexander</span></td>
+			<td>20</td>
+			<td>ST</td>
+			<td>Real San Sebastián</td>
+			<td>15.9</td>
+			<td>5.5</td>
+			<td>se</td>
+		</tr>
+		<tr data-player-id="29194724" class="paf">
+			<td>ST</td>
+			<td>77</td>
+			<td><span>Semenyo, Antoine</span></td>
+			<td>20</td>
+			<td>AM RL, ST</td>
+			<td>Bristol City</td>
+			<td>2.5</td>
+			<td>0.2</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="43390644">
+			<td>ST</td>
+			<td>81</td>
+			<td><span>Mulattieri, Samuele</span></td>
+			<td>19</td>
+			<td>AM/F C</td>
+			<td>Inter</td>
+			<td>1.1</td>
+			<td>0.08</td>
+			<td>it</td>
+		</tr>
+		<tr data-player-id="62216183">
+			<td>ST</td>
+			<td>79</td>
+			<td><span>Tedic, Slobodan</span></td>
+			<td>20</td>
+			<td>ST</td>
+			<td>Man City</td>
+			<td>15</td>
+			<td>0.4</td>
+			<td>rs</td>
+		</tr>
+		<tr data-player-id="37062010">
+			<td>ST</td>
+			<td>80</td>
+			<td><span>Buitink, Thomas</span></td>
+			<td>20</td>
+			<td>AM RL, ST</td>
+			<td>Vitesse</td>
+			<td>1.6</td>
+			<td>0.8</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="13196622">
+			<td>ST</td>
+			<td>77</td>
+			<td><span>Traoré, Lassina</span></td>
+			<td>19</td>
+			<td>ST</td>
+			<td>Ajax</td>
+			<td>4.1</td>
+			<td>0.6</td>
+			<td>bf</td>
+		</tr>
+		<tr data-player-id="28116310">
+			<td>ST</td>
+			<td>77</td>
+			<td><span>John-Jules, Tyreece</span></td>
+			<td>19</td>
+			<td>AM RL, ST</td>
+			<td>Arsenal</td>
+			<td>5</td>
+			<td>0.5</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="68020557">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Kassem, Anis</span></td>
+			<td>15</td>
+			<td>ST</td>
+			<td>Tishreen</td>
+			<td>0.09</td>
+			<td>0.001</td>
+			<td>sy</td>
+		</tr>
+		<tr data-player-id="29189401">
+			<td>ST</td>
+			<td>77</td>
+			<td><span>Appiah, Arvin</span></td>
+			<td>19</td>
+			<td>AM RL, ST</td>
+			<td>Almería</td>
+			<td>7.3</td>
+			<td>0.1</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="16202374">
+			<td>ST</td>
+			<td>76</td>
+			<td><span>Junior Adamu</span></td>
+			<td>19</td>
+			<td>AM RLC, F C</td>
+			<td>FC RB Salzburg</td>
+			<td>1.3</td>
+			<td>0.1</td>
+			<td>at</td>
+		</tr>
+		<tr data-player-id="37060922" class="pah">
+			<td>ST</td>
+			<td>86</td>
+			<td><span>Zirkzee, Joshua</span></td>
+			<td>19</td>
+			<td>ST</td>
+			<td>FC Bayern</td>
+			<td>14</td>
+			<td>1.1</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="29179241" class="pag">
+			<td>ST</td>
+			<td>90</td>
+			<td><span>Haaland, Erling</span></td>
+			<td>20</td>
+			<td>ST</td>
+			<td>Borussia Dortmund</td>
+			<td>140</td>
+			<td>56.9</td>
+			<td>no</td>
+		</tr>
+		<tr data-player-id="37071199">
+			<td>ST</td>
+			<td>81</td>
+			<td><span>Hansen, Sontje</span></td>
+			<td>18</td>
+			<td>AM RLC, F C</td>
+			<td>Ajax</td>
+			<td>3.6</td>
+			<td>0.1</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="13193928" class="pab">
+			<td>ST</td>
+			<td>82</td>
+			<td><span>Toure, Djibril</span></td>
+			<td>17</td>
+			<td>AM RLC, F C</td>
+			<td>CEFOMIG</td>
+			<td>0</td>
+			<td>0.02</td>
+			<td>gn</td>
+		</tr>
+		<tr data-player-id="2000065612">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Breitenbucher, Nick</span></td>
+			<td>17</td>
+			<td>AM RL, ST</td>
+			<td>Hoffenheim</td>
+			<td>0.03</td>
+			<td>0.13</td>
+			<td>de</td>
+		</tr>
+		<tr data-player-id="83320131">
+			<td>ST</td>
+			<td>82</td>
+			<td><span>Chermiti, Youssel</span></td>
+			<td>16</td>
+			<td>ST</td>
+			<td>Sporting</td>
+			<td>0.06</td>
+			<td>0</td>
+			<td>pt</td>
+		</tr>
+		<tr data-player-id="37085326">
+			<td>ST</td>
+			<td>81</td>
+			<td><span>el Moussaoui, Ilyas</span></td>
+			<td>16</td>
+			<td>ST</td>
+			<td>Feyenoord</td>
+			<td>0.09</td>
+			<td>0.14</td>
+			<td>nl</td>
+		</tr>
+		<tr data-player-id="2000006283">
+			<td>ST</td>
+			<td>82</td>
+			<td><span>Lochereau-Pho, Yad</span></td>
+			<td>16</td>
+			<td>ST</td>
+			<td>OL</td>
+			<td>0.06</td>
+			<td>0.12</td>
+			<td>fr</td>
+		</tr>
+		<tr data-player-id="28124579" class="pah">
+			<td>ST</td>
+			<td>86</td>
+			<td><span>Musiala, Jamal</span></td>
+			<td>17</td>
+			<td>AM RLC, F C</td>
+			<td>FC Bayern</td>
+			<td>0.8</td>
+			<td>0.18</td>
+			<td>gb-eng</td>
+		</tr>
+		<tr data-player-id="52094936">
+			<td>ST</td>
+			<td>78</td>
+			<td><span>Odubeko, Ademipo</span></td>
+			<td>17</td>
+			<td>ST</td>
+			<td>West Ham</td>
+			<td>4</td>
+			<td>0.06</td>
+			<td>ie</td>
+		</tr>
+		<tr data-player-id="2000065612">
+			<td>ST</td>
+			<td>77</td>
+			<td><span>Thielmann, Jan</span></td>
+			<td>17</td>
+			<td>AM RC, F C</td>
+			<td>1. FC Koln</td>
+			<td>2.6</td>
+			<td>2.5</td>
+			<td>de</td>
+		</tr>
+	</tbody>
+</table>
+
+</div>
+
+<hr>
+
+<table>
+	<tr>
+		<td class="paf"><strong>PURPLE</strong>:</td>
+		<td>&lt;=149 (fixed)</td>
+	</tr>
+	<tr>
+		<td class=""><strong>GREY/WHITE</strong>:</td>
+		<td>-8</td>
+	</tr>
+		<td class="pab"><strong>CYAN</strong>:</td>
+		<td>-85 or 150-159</td>
+	</tr>
+		<td class="pah"><strong>GREEN</strong>:</td>
+		<td>-9 or 160-169</td>
+	</tr>
+		<td class="pag"><strong>GOLD</strong>:</td>
+		<td>-95 or 170+</td>
+	</tr>
+</table>
+
+<p>And ratings in <strong>YELLOW</strong> cell: Players with fixed PA &gt;=150</p>
+<p>For reference, <strong>negative PA</strong> means player will get a random value for it of specific range in each new save.</p>
+
+<table>
+	<tr>
+		<td>-8 = 130-160</td>
+	</tr>
+		<td>-85 = 140-170</td>
+	</tr>
+		<td>-9 = 150-180</td>
+	</tr>
+		<td>-95 = 160-190</td>
+	</tr>
+		<td>-10 = 170-200</td>
+	</tr>
+</table>
+
+</body>
+</html>
