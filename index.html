@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1">
-	<title>Football Manager 2021 Wonderkids | FM Scout</title>
+	<title>Football Manager 2021 Wonderkids</title>
 
 	<style media="screen">
 		body {
@@ -24,8 +24,8 @@
 			white-space: nowrap;
 		}
 		#search {
-			width: 85%;
-			margin-left: 5%;
+			width: 50%;
+			/* margin-left: 5%; */
 			padding: 0.5em;
 			margin-bottom: 2em;
 		}
@@ -97,6 +97,7 @@
 
 		window.onload = function(){
 			TableSorter.makeSortable(document.getElementById("players"));
+			//killSomeRows();
 		};
 
 		(function(document) {
@@ -136,12 +137,69 @@
 			});
 
 		})(document);
+
+
+		function filterGroup(){
+			var table = document.getElementById("players");
+			var rows = table.getElementsByTagName("tr");
+			var grp = document.getElementById("grp").value;
+			var wc = document.getElementById("wc").checked;
+
+
+			var i=0;
+			var thisRow;
+			for(i=1; i<rows.length; i++){
+				thisRow = rows[i].getElementsByTagName("td");
+				var rating = Number(thisRow[1].innerHTML);
+				// console.log(thisRow[0]);
+				if ( grp == 'ALL' ) {
+					rows[i].style.display="";
+					if ( wc ) {
+						if ( !(rating>=81) ) {
+							rows[i].style.display="none";
+						}
+					}
+				} else {
+					if( thisRow[0].innerHTML==grp ){
+						rows[i].style.display="";
+						if ( wc ) {
+							if ( !(rating>=81) ) {
+								rows[i].style.display="none";
+							}
+						}
+
+					} else {
+						rows[i].style.display="none";
+					}
+				}
+
+			}
+		}
 	</script>
 </head>
 
 <body>
 
 <input type="search" id="search" placeholder="Search..." class="search" data-table="players">
+
+<select id="grp" name="grp" onchange="filterGroup()">
+	<option value="ALL">ALL</option>
+	<option value="GK">GK</option>
+	<option value="DC">DC</option>
+	<option value="DL">DL</option>
+	<option value="DR">DR</option>
+	<option value="DM">DM</option>
+	<option value="CM">CM</option>
+	<option value="LW">LW</option>
+	<option value="RW">RW</option>
+	<option value="AM">AM</option>
+	<option value="ST">ST</option>
+</select>
+
+<label>
+	<input type="checkbox" id="wc" name="wc" value="true" onchange="filterGroup()">
+	World Class
+</label>
 
 <div class="twrap">
 
@@ -8166,6 +8224,29 @@
 
 <table>
 	<tr>
+		<td>81+</td>
+		<td>world-class player</td>
+	</tr>
+	<tr>
+		<td>78-80</td>
+		<td>great player for Premier League</td>
+	</tr>
+	<tr>
+		<td>75-77</td>
+		<td>top player for Championship</td>
+	</tr>
+	<tr>
+		<td>72-74</td>
+		<td>top player for League One</td>
+	</tr>
+	<tr>
+		<td>68-71</td>
+		<td>top player for League Two</td>
+	</tr>
+</table>
+
+<table>
+	<tr>
 		<td class="paf"><strong>PURPLE</strong>:</td>
 		<td>&lt;=149 (fixed)</td>
 	</tr>
@@ -8173,12 +8254,15 @@
 		<td class=""><strong>GREY/WHITE</strong>:</td>
 		<td>-8</td>
 	</tr>
+	<tr>
 		<td class="pab"><strong>CYAN</strong>:</td>
 		<td>-85 or 150-159</td>
 	</tr>
+	<tr>
 		<td class="pah"><strong>GREEN</strong>:</td>
 		<td>-9 or 160-169</td>
 	</tr>
+	<tr>
 		<td class="pag"><strong>GOLD</strong>:</td>
 		<td>-95 or 170+</td>
 	</tr>
@@ -8191,12 +8275,16 @@
 	<tr>
 		<td>-8 = 130-160</td>
 	</tr>
+	<tr>
 		<td>-85 = 140-170</td>
 	</tr>
+	<tr>
 		<td>-9 = 150-180</td>
 	</tr>
+	<tr>
 		<td>-95 = 160-190</td>
 	</tr>
+	<tr>
 		<td>-10 = 170-200</td>
 	</tr>
 </table>
